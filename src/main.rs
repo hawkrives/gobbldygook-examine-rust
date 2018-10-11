@@ -309,16 +309,38 @@ fn compute(
     courses: &CourseList,
     overrides: &OverrideMap,
     fulfillments: &FulfillmentMap,
-) -> Vec<RequirementResult> {
+) -> RequirementResult {
     let z: Vec<RequirementResult> = area_of_study
         .requirements
         .iter()
         .map(|req| compute_inner(req, vec![], courses, overrides, fulfillments))
         .collect();
 
-    let result = compute_chunk(area_of_study.result, vec![], courses, overrides, fulfillments);
+    // let result = compute_chunk(area_of_study.result, vec![], courses, overrides, fulfillments);
 
-    return result;
+    let r = Requirement {
+        name: "Requirement".to_string(),
+        result: HansonExpression::Course(CourseExpression {
+            department: "CSCI".to_string(),
+            number: 121,
+        }),
+        filter: Option::None,
+        computed: true,
+        children_share_courses: false,
+        children: Map::new(),
+    };
+
+    let x = RequirementResult {
+        applied_fulfillment: Option::None,
+        matched_courses: vec![],
+        success: true,
+        was_evaluated: true,
+        did_count: false, // what does this do?
+        requirement: r,
+        children_results: Map::new(),
+    };
+
+    return x;
 }
 
 fn compute_progress(evaluation_result: &RequirementResult) -> (i32, i32) {
