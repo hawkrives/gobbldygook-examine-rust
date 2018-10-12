@@ -21,8 +21,8 @@ pub enum HansonCounterShorthand {
 #[derive(Debug, Clone)]
 pub struct ExpressionCounter {
     pub operator: HansonCounterOperator,
-    pub was: HansonCounterShorthand,
-    pub num: i32,
+    pub was: Option<HansonCounterShorthand>,
+    pub num: f32,
 }
 
 #[derive(Debug, Clone)]
