@@ -1,48 +1,65 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use std::collections::BTreeMap as Map;
+use std::collections::BTreeMap;
 
 mod expressions;
 use expressions::*;
 
+// the input to `evaluate`
 #[derive(Debug, Clone)]
 pub struct AreaOfStudy {
     pub area_name: String,
     pub area_type: String,
     pub area_revision: String,
-    pub requirements: Vec<Requirement>,
     pub result: HansonExpression,
+    pub requirements: Vec<Requirement>,
 }
 
+// the output of `evaluate`
 #[derive(Debug, Clone)]
-struct EvaluationResult<'a> {
-    pub area: &'a AreaOfStudy,
+struct EvaluationResult {
+    pub area: AreaOfStudy,
     pub progress: (i32, i32),
     pub error: Option<String>,
-    pub results: RequirementResult,
+    pub matched_courses: Vec<Course>,
+    pub success: bool,
+    pub was_evaluated: bool,
+    pub did_count: bool, // what does this do?
+    pub overridden: bool,
+    pub children_results: Vec<RequirementResult>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Requirement {
     pub name: String,
-    pub result: HansonExpression,
+    pub result: Option<HansonExpression>,
+    pub message: Option<String>,
     pub filter: Option<FilterExpression>,
-    pub computed: bool,
     pub children_share_courses: bool,
-    pub children: Map<String, Requirement>,
-    // pub overridden: Option<bool>,
+    pub children: Vec<Requirement>,
 }
 
 #[derive(Debug, Clone)]
 pub struct RequirementResult {
-    pub applied_fulfillment: Option<CourseExpression>,
+    pub applied_fulfillment: Option<Course>,
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
     pub did_count: bool, // what does this do?
-    pub children_results: Map<String, RequirementResult>,
+    pub overridden: bool,
+    pub children_results: Vec<RequirementResult>,
     pub requirement: Requirement,
+}
+
+#[derive(Debug, Clone)]
+pub struct ExpressionResult {
+    pub expression: HansonExpression,
+    pub matched_courses: Vec<Course>,
+    pub success: bool,
+    pub was_evaluated: bool,
+    pub did_count: bool, // what does this do?
+    pub overridden: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -50,83 +67,135 @@ pub struct Course {
     pub clbid: String,
 }
 
-type OverrideMap = Map<String, bool>;
-type FulfillmentMap = Map<String, Course>;
+type OverrideMap = BTreeMap<String, bool>;
+type FulfillmentMap = BTreeMap<String, Course>;
 type CourseList = Vec<Course>;
 
-fn compute_inner(
-    requirement: &Requirement,
-    path: Vec<String>,
-    courses: &CourseList,
-    overrides: &OverrideMap,
-    fulfillments: &FulfillmentMap,
-) -> RequirementResult {
-    let r = Requirement {
-        name: "Requirement".to_string(),
-        result: HansonExpression::Course(CourseExpression {
-            department: "CSCI".to_string(),
-            number: 121,
-        }),
-        filter: Option::None,
-        computed: true,
-        children_share_courses: false,
-        children: Map::new(),
-    };
-
-    let x = RequirementResult {
-        applied_fulfillment: Option::None,
+fn compute_expression(
+    expression: HansonExpression,
+    filter: Option<FilterExpression>,
+    children: Vec<Requirement>,
+    courses: CourseList,
+    dirty: Vec<Course>,
+    fulfillment: Option<Course>,
+) -> ExpressionResult {
+    ExpressionResult {
+        expression: expression,
         matched_courses: vec![],
         success: true,
         was_evaluated: true,
-        did_count: false, // what does this do?
-        requirement: r,
-        children_results: Map::new(),
-    };
-
-    return x;
+        did_count: true,
+        overridden: false,
+    }
 }
 
-fn compute(
-    area_of_study: &AreaOfStudy,
+fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
+    return courses;
+}
+
+fn make_requirement_path(path: &Vec<String>) -> String {
+    path.join("\x1C").to_lowercase()
+}
+
+fn apply_fulfillment_to_expression(
+    result_expr: HansonExpression,
+    fulfillment_value: Course,
+) -> HansonExpression {
+    result_expr
+}
+
+fn compute_requirement(
+    requirement: Requirement,
     path: Vec<String>,
-    courses: &CourseList,
-    overrides: &OverrideMap,
-    fulfillments: &FulfillmentMap,
+    mut courses: CourseList,
+    overrides: OverrideMap,
+    fulfillments: FulfillmentMap,
 ) -> RequirementResult {
-    let z: Vec<RequirementResult> = area_of_study
-        .requirements
+    let req_name = requirement.name.clone();
+
+    let mut path_to_here: Vec<String> = vec![];
+    path_to_here.extend(path.iter().cloned());
+    path_to_here.extend(vec![req_name]);
+
+    let children_results: Vec<RequirementResult> = requirement
+        .children
         .iter()
-        .map(|req| compute_inner(req, vec![], courses, overrides, fulfillments))
-        .collect();
+        .map(|req| {
+            compute_requirement(
+                req.clone(),
+                path.clone(),
+                courses.clone(),
+                overrides.clone(),
+                fulfillments.clone(),
+            )
+        }).collect();
 
-    // let result = compute_chunk(area_of_study.result, vec![], courses, overrides, fulfillments);
+    let did_count = false;
+    let mut success = false;
+    let mut was_evaluated = false;
+    let mut matched_courses: Vec<Course> = vec![];
+    let mut applied_fulfillment: Option<Course> = None;
 
-    let r = Requirement {
-        name: "Requirement".to_string(),
-        result: HansonExpression::Course(CourseExpression {
-            department: "CSCI".to_string(),
-            number: 121,
-        }),
-        filter: Option::None,
-        computed: true,
-        children_share_courses: false,
-        children: Map::new(),
-    };
+    let mut was_overridden = false;
 
-    let x = RequirementResult {
-        applied_fulfillment: Option::None,
-        matched_courses: vec![],
-        success: true,
-        was_evaluated: true,
-        did_count: false, // what does this do?
-        requirement: r,
-        children_results: Map::new(),
-    };
+    if let Some(mut result_expr) = requirement.result.clone() {
+        was_evaluated = true;
 
-    return x;
+        if let Some(filter) = requirement.filter {
+            courses = apply_filter(filter, courses.clone());
+        }
+
+        // TODO: assert that requirement.result is not empty – probably in hanson-format, rather than examine-student
+
+        let computed_result;
+
+        let fulfillment = fulfillments.get(&make_requirement_path(&path));
+        if let Some(value) = fulfillment {
+            applied_fulfillment = Some(value.clone());
+            result_expr = apply_fulfillment_to_expression(result_expr.clone(), value.clone());
+
+            computed_result = compute_expression(
+                result_expr,
+                requirement.filter,
+                requirement.children.clone(),
+                courses,
+                vec![],
+                Some(value.clone()),
+            );
+        } else {
+            computed_result = compute_expression(
+                result_expr,
+                requirement.filter,
+                requirement.children.clone(),
+                courses,
+                vec![],
+                None,
+            );
+        }
+
+        success = computed_result.success;
+        matched_courses = computed_result.matched_courses;
+
+        let req_override = overrides.get(&make_requirement_path(&path));
+        if let Some(value) = req_override {
+            was_overridden = true;
+            success = *value;
+        }
+    }
+
+    RequirementResult {
+        applied_fulfillment: applied_fulfillment,
+        matched_courses: matched_courses,
+        success: success,
+        was_evaluated: was_evaluated,
+        did_count: did_count,
+        overridden: was_overridden,
+        requirement: requirement.clone(),
+        children_results: children_results,
+    }
 }
 
-fn compute_progress(evaluation_result: &RequirementResult) -> (i32, i32) {
+fn compute_progress(evaluation_result: ExpressionResult) -> (i32, i32) {
     // match evaluation_result.requirement.success {
     //     HansonExpression::Course(expr) => expr,
     //     HansonExpression::Of(expr) => expr,
@@ -140,31 +209,56 @@ fn compute_progress(evaluation_result: &RequirementResult) -> (i32, i32) {
     (0, 1)
 }
 
-fn evaluate(
+fn evaluate_area(
     courses: CourseList,
     overrides: OverrideMap,
     fulfillments: FulfillmentMap,
-    area_of_study: &AreaOfStudy,
+    area_of_study: AreaOfStudy,
 ) -> EvaluationResult {
+    // 1. Recursively call compute_requirement() on all children
+    // 2. Compute this result
+
     let name = area_of_study.area_name.clone();
     let kind = area_of_study.area_type.clone();
+    let path = vec![name, kind];
 
-    let result = compute(
-        &area_of_study,
-        vec![kind, name],
-        &courses,
-        &overrides,
-        &fulfillments,
+    let results: Vec<RequirementResult> = area_of_study
+        .requirements
+        .iter()
+        .map(|req| {
+            compute_requirement(
+                req.clone(),
+                path.clone(),
+                courses.clone(),
+                overrides.clone(),
+                fulfillments.clone(),
+            )
+        }).collect();
+
+    let result = compute_expression(
+        area_of_study.result.clone(),
+        None,
+        area_of_study.requirements.clone(),
+        courses,
+        vec![],
+        None,
     );
 
-    let progress = compute_progress(&result);
+    let computed_result = result.success;
 
-    return EvaluationResult {
-        area: &area_of_study,
+    let progress = compute_progress(result);
+
+    EvaluationResult {
+        area: area_of_study,
+        matched_courses: vec![],
+        success: computed_result,
+        was_evaluated: true,
+        did_count: false, // what does this do?
+        overridden: false,
+        children_results: vec![],
+        error: None,
         progress: progress,
-        error: Option::None,
-        results: result,
-    };
+    }
 }
 
 fn main() {
@@ -172,14 +266,14 @@ fn main() {
 
     let r = Requirement {
         name: "Requirement".to_string(),
-        result: HansonExpression::Course(CourseExpression {
+        result: Some(HansonExpression::Course(CourseExpression {
             department: "CSCI".to_string(),
             number: 121,
-        }),
+        })),
+        message: None,
         filter: Option::None,
-        computed: true,
         children_share_courses: false,
-        children: Map::new(),
+        children: vec![],
     };
 
     let v = vec![r];
@@ -194,7 +288,7 @@ fn main() {
         }),
     };
 
-    let result = evaluate(vec![], Map::new(), Map::new(), &a);
+    let result = evaluate_area(vec![], BTreeMap::new(), BTreeMap::new(), a);
 
     println!("{:#?}", result);
 }

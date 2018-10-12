@@ -199,7 +199,7 @@ pub struct FilterWhereExpression {
     pub qualifier: Qualifier,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum FilterExpression {
     FilterOfExpression,
     FilterWhereExpression,
