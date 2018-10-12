@@ -1,0 +1,373 @@
+---
+overrides: {}
+courses: [
+  {
+    "clbid": "0000106110",
+    "credits": 1,
+    "crsid": "0000000292",
+    "department": "CSCI",
+    "description": [
+      "This course provides an introduction to the structure and creation of computer software, using the C++ programming language and emphasizing object-oriented programming and structured collaborative software-development methodology. Concepts and skills are applied in a substantial multi-week team project. Topics include object-oriented programming, specification, programmed memory management, indirect addressing, tools including UML, team software process, requirements analysis, software design strategies, and elementary ethical analysis of software systems. Counts toward mathematical biology and management studies concentrations; one of CSCI 121, CSCI 125, CSCI 251 counts toward linguistic studies concentration. Offered each semester.Prerequisite: CSCI 121 or CSCI 125 or CSCI 241 or PHYS 130 or MATH 252 or permission of instructor; concurrent registration in CSCI 252 is required."
+    ],
+    "enrolled": 19,
+    "groupid": "0000000292",
+    "instructors": [
+      "Richard Allen"
+    ],
+    "level": 200,
+    "max": 25,
+    "name": "Software Design",
+    "notes": [
+      "This course has class-year limits.",
+      "Students in CSCI 251 must also register for one lab CSCI 252 AL or BL."
+    ],
+    "number": 251,
+    "offerings": [
+      {
+        "day": "Mo",
+        "end": "10:00",
+        "location": "RNS 202",
+        "start": "09:05"
+      },
+      {
+        "day": "We",
+        "end": "10:00",
+        "location": "RNS 202",
+        "start": "09:05"
+      },
+      {
+        "day": "Fr",
+        "end": "10:00",
+        "location": "RNS 202",
+        "start": "09:05"
+      }
+    ],
+    "pn": false,
+    "prerequisites": "CSCI 121 or CSCI 125 or CSCI 241 or PHYS 130 or MATH 252 or permission of instructor; concurrent registration in CSCI 252 is required.",
+    "revisions": [
+      {
+        "_updated": "2016-04-25T21:43:46.859841+00:00",
+        "locations": []
+      },
+      {
+        "_updated": "2017-05-30T17:12:08.187922+00:00",
+        "description": "This course provides an introduction to the structure and creation of computer software, using the C++ programming language and emphasizing object-oriented programming and structured collaborative software-development methodology. Concepts and skills are applied in a substantial team project. Topics include object-oriented programming, specification, programmed memory management, indirect addressing, tools including UML, team software process, requirements analysis, software design strategies, and elementary ethical analysis of software systems. Counts toward mathematical biology and management studies concentrations; one of CSCI 121, CSCI 125, CSCI 251 counts toward linguistic studies concentration. Offered each semester.Prerequisite: CSCI 121 or CSCI 125 or CSCI 241 or PHYS 130 or MATH 252 or permission of instructor; concurrent registration in CSCI 252 is required."
+      },
+      {
+        "_updated": "2018-02-03T00:01:55.616693+00:00",
+        "prerequisites": "Prerequisite: CSCI 121 or CSCI 125 or CSCI 241 or PHYS 130 or MATH 252 or permission of instructor; concurrent registration in CSCI 252 is required."
+      },
+      {
+        "_updated": "2018-07-12T16:51:36.770539+00:00",
+        "enroll": null,
+        "max": null
+      },
+      {
+        "_updated": "2018-08-07T14:48:30.181477+00:00",
+        "enroll": "19",
+        "max": "25"
+      }
+    ],
+    "semester": 1,
+    "status": "O",
+    "term": 20161,
+    "title": "Software Design and Implementation",
+    "type": "Research",
+    "year": 2016,
+    "deptnum": "CSCI 251"
+  },
+  {
+    "clbid": "0000106112",
+    "credits": 0.25,
+    "crsid": "0000000293",
+    "department": "CSCI",
+    "description": [
+      "Students investigate the implementation of software using strategies and concepts presented in CSCI 251, explore standard technologies for creation and management of multi-module software systems, and carry out stages of structured team software project, through hands-on computational exercises and with direct support provided in a small group context. Offered each semester. Prerequisite: concurrent registration in CSCI 251."
+    ],
+    "enrolled": 10,
+    "groupid": "0000000292",
+    "instructors": [
+      "Richard Allen"
+    ],
+    "level": 200,
+    "max": 15,
+    "name": "Software Design/Lab",
+    "number": 252,
+    "offerings": [
+      {
+        "day": "Th",
+        "end": "14:45",
+        "location": "RNS 202",
+        "start": "12:45"
+      }
+    ],
+    "pn": false,
+    "prerequisites": "concurrent registration in CSCI 251.",
+    "revisions": [
+      {
+        "_updated": "2016-04-25T21:43:46.863694+00:00",
+        "locations": []
+      },
+      {
+        "_updated": "2018-02-03T00:01:55.619100+00:00",
+        "prerequisites": "Prerequisite: concurrent registration in CSCI 251."
+      },
+      {
+        "_updated": "2018-07-12T16:51:36.772301+00:00",
+        "enroll": null,
+        "max": null
+      },
+      {
+        "_updated": "2018-08-07T14:48:30.183566+00:00",
+        "enroll": "10",
+        "max": "15"
+      }
+    ],
+    "section": "B",
+    "semester": 1,
+    "status": "O",
+    "term": 20161,
+    "title": "Software Design and Implementation Lab",
+    "type": "Lab",
+    "year": 2016,
+    "deptnum": "CSCI 252[L]"
+  },
+  {
+    "clbid": "0000105649",
+    "credits": 1,
+    "crsid": "0000000479",
+    "department": "FREN",
+    "description": [
+      "Through study, discussion and analysis of a wide variety of texts, students explore specific social and cultural topics relevant to French culture yesterday and today (e.g., stereotypes, the family, education, immigration) and develop and expand their ability to listen, speak, read and write in French while also learning specific listening and reading strategies. Explicit focus on cross-cultural comparison/contrast and analysis. Offered each semester. Prerequisite: FREN 112 or placement."
+    ],
+    "enrolled": 15,
+    "instructors": [
+      "Cedric Briand"
+    ],
+    "level": 200,
+    "max": 19,
+    "name": "Intermed French I",
+    "number": 231,
+    "offerings": [
+      {
+        "day": "Mo",
+        "end": "14:55",
+        "location": "TOH 110",
+        "start": "14:00"
+      },
+      {
+        "day": "We",
+        "end": "14:55",
+        "location": "TOH 110",
+        "start": "14:00"
+      },
+      {
+        "day": "Fr",
+        "end": "14:55",
+        "location": "TOH 110",
+        "start": "14:00"
+      }
+    ],
+    "pn": false,
+    "prerequisites": "FREN 112 or placement.",
+    "revisions": [
+      {
+        "_updated": "2016-04-25T21:43:46.323640+00:00",
+        "locations": []
+      },
+      {
+        "_updated": "2016-06-25T06:18:55.969887+00:00",
+        "instructors": [
+          "Maria Vendetti"
+        ]
+      },
+      {
+        "_updated": "2016-08-06T17:00:53.248617+00:00",
+        "instructors": [
+          "Staff"
+        ],
+        "section": "D"
+      },
+      {
+        "_updated": "2016-09-07T11:31:28.893156+00:00",
+        "status": "O"
+      },
+      {
+        "_updated": "2018-02-03T00:01:55.298657+00:00",
+        "prerequisites": "Prerequisite: FREN 112 or placement."
+      },
+      {
+        "_updated": "2018-07-12T16:51:36.522422+00:00",
+        "enroll": null,
+        "max": null
+      },
+      {
+        "_updated": "2018-08-07T14:48:29.913232+00:00",
+        "enroll": "15",
+        "max": "19"
+      }
+    ],
+    "section": "E",
+    "semester": 1,
+    "status": "C",
+    "term": 20161,
+    "title": "Intermediate French I",
+    "type": "Research",
+    "year": 2016,
+    "deptnum": "FREN 231"
+  },
+  {
+    "clbid": "0000105581",
+    "credits": 1,
+    "crsid": "0000000734",
+    "department": "MATH",
+    "description": [
+      "This course covers the material in MATH 126 in greater depth and breadth. Credit may be earned for either MATH 126 or MATH 128, but not both. Offered annually in the fall semester. Prerequisite: 4 or 5 on AP Calculus AB exam or permission of the Mathematics Placement Director."
+    ],
+    "enrolled": 23,
+    "gereqs": [
+      "AQR"
+    ],
+    "instructors": [
+      "Kristina Garrett"
+    ],
+    "level": 100,
+    "max": 22,
+    "name": "Honors Calculus II",
+    "number": 128,
+    "offerings": [
+      {
+        "day": "Mo",
+        "end": "11:40",
+        "location": "TOH 184",
+        "start": "10:45"
+      },
+      {
+        "day": "We",
+        "end": "11:40",
+        "location": "TOH 184",
+        "start": "10:45"
+      },
+      {
+        "day": "Fr",
+        "end": "11:40",
+        "location": "TOH 184",
+        "start": "10:45"
+      }
+    ],
+    "pn": false,
+    "prerequisites": "4 or 5 on AP Calculus AB exam or permission of the Mathematics Placement Director.",
+    "revisions": [
+      {
+        "_updated": "2016-04-25T21:43:46.221517+00:00",
+        "locations": []
+      },
+      {
+        "_updated": "2016-09-07T11:31:28.819727+00:00",
+        "status": "O"
+      },
+      {
+        "_updated": "2018-02-03T00:01:55.246953+00:00",
+        "prerequisites": "Prerequisite: 4 or 5 on AP Calculus AB exam or permission of the Mathematics Placement Director."
+      },
+      {
+        "_updated": "2018-07-12T16:51:36.484118+00:00",
+        "enroll": null,
+        "max": null
+      },
+      {
+        "_updated": "2018-08-07T14:48:29.869946+00:00",
+        "enroll": "23",
+        "max": "22"
+      }
+    ],
+    "section": "A",
+    "semester": 1,
+    "status": "C",
+    "term": 20161,
+    "type": "Research",
+    "year": 2016,
+    "deptnum": "MATH 128"
+  },
+  {
+    "clbid": "0000105482",
+    "credits": 1,
+    "crsid": "0000000498",
+    "department": "WRIT",
+    "description": [
+      "The recent economic downturn—what many have called a collapse—has raised concerns regarding the financial health of future generations. It is now widely accepted that the potential for younger Americans to do better than previous generations—the narrative of social mobility popularly understood as the American Dream—is no longer a reality. Instead, there is a growing consensus regarding the death of this dream and with it the very possibility to improve one’s economic, social, and cultural condition. It seems that rather than progressing toward a healthy democracy, the United States has spiraled into a science fiction reality where the media controls our thinking, politics is governed by self-interest, and corporations are powerful enough to hire private armies to impose their will around the globe. This seminar centers on twentieth century American culture, particularly as it relates to issues of historical progress, national identity, cultural change, and aesthetic experimentation. The main question we will address is “What has happened to the American Dream?” In addition to literature, we will also read some philosophical and political texts. Requirements will include short writing assignments, a mid-term paper, and a final paper. Some of the texts we will discuss include The Yellow Wallpaper, as well as films like There Will Be Blood, The Corporation, Revolutionary Road, andFight Club."
+    ],
+    "enrolled": 18,
+    "gereqs": [
+      "FYW"
+    ],
+    "instructors": [
+      "Carlos Gallego"
+    ],
+    "level": 100,
+    "max": 18,
+    "name": "First-Year Writing",
+    "notes": [
+      "Section Title: 20th Century American Culture and the Death of the Dream"
+    ],
+    "number": 111,
+    "offerings": [
+      {
+        "day": "Mo",
+        "end": "13:50",
+        "location": "OM 020",
+        "start": "12:55"
+      },
+      {
+        "day": "We",
+        "end": "13:50",
+        "location": "OM 020",
+        "start": "12:55"
+      },
+      {
+        "day": "Fr",
+        "end": "13:50",
+        "location": "OM 020",
+        "start": "12:55"
+      }
+    ],
+    "pn": false,
+    "prerequisites": false,
+    "revisions": [
+      {
+        "_updated": "2016-04-25T21:43:46.102292+00:00",
+        "locations": []
+      },
+      {
+        "_updated": "2016-06-25T06:18:55.707130+00:00",
+        "notes": null
+      },
+      {
+        "_updated": "2016-08-06T17:00:53.173038+00:00",
+        "status": "O"
+      },
+      {
+        "_updated": "2017-05-30T17:11:15.968920+00:00",
+        "description": "First-Year Writing, taken during the first year, equips students for effective writing in the liberal arts and introduces writing as a means of learning. The course is taught in multiple sections that explore a variety of topics. In all sections, students write frequently in a variety of genres, with emphasis in writing expository essays. One or more assignments require research. As part of the writing process, students revise their writing and meet individually with course faculty to discuss their writing."
+      },
+      {
+        "_updated": "2018-07-12T16:51:36.436614+00:00",
+        "enroll": null,
+        "max": null
+      },
+      {
+        "_updated": "2018-08-07T14:48:29.807410+00:00",
+        "enroll": "18",
+        "max": "18"
+      }
+    ],
+    "section": "G",
+    "semester": 1,
+    "status": "C",
+    "term": 20161,
+    "type": "Research",
+    "year": 2016,
+    "deptnum": "WRIT 111"
+  }
+]
+fulfillments: {}

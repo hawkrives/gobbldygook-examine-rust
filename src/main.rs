@@ -2,8 +2,9 @@
 #![allow(unused_variables)]
 
 #[macro_use]
+extern crate structopt;
+#[macro_use]
 extern crate serde_derive;
-
 extern crate serde_json;
 extern crate serde_yaml;
 
@@ -16,9 +17,14 @@ use evaluate::Requirement;
 use expressions::CourseExpression;
 use expressions::HansonExpression;
 use expressions::ReferenceExpression;
-use parse::parse;
+
 use std::collections::BTreeMap;
-use std::io::{self, Read};
+use std::fs;
+use std::path::PathBuf;
+use structopt::StructOpt;
+
+// extern crate clap;
+// use clap::App;
 
 fn main2() {
     let r = Requirement {
@@ -51,24 +57,58 @@ fn main2() {
     println!("{:#?}", result);
 }
 
+/// A basic example
+#[derive(StructOpt, Debug)]
+#[structopt(name = "basic")]
+struct Opt {
+    /// Activate debug mode
+    #[structopt(short = "d", long = "debug")]
+    debug: bool,
+
+    /// Activate debug mode
+    #[structopt(long = "debug-area")]
+    debug_area: bool,
+
+    /// Output file
+    #[structopt(name = "AREA", parse(from_os_str))]
+    area_file: PathBuf,
+
+    /// Output file
+    #[structopt(name = "STUDENT", parse(from_os_str))]
+    student_file: PathBuf,
+}
+
 fn main() {
-    // let area = fs::read_to_string("./sample.json").expect("Unable to read file");
-    let mut area = String::new();
-    io::stdin()
-        .read_to_string(&mut area)
-        .expect("Unabled to read stdin");
+    let opt = Opt::from_args();
+    // println!("{:?}", opt);
 
-    let deserialized = parse(area);
+    let area_buf = fs::read_to_string(opt.area_file).expect("Unable to read file");
+    let student_buf = fs::read_to_string(opt.student_file).expect("Unable to read file");
 
-    println!("---");
-    println!("{:?}", deserialized);
+    let area = parse::parse_area(area_buf);
+    let data = parse::parse_student(student_buf);
 
-    let serialized: String = serde_yaml::to_string(&deserialized).unwrap();
+    // println!("{:?}", data);
 
-    println!("{}", serialized);
+    if opt.debug_area {
+        println!("---");
+        println!("{:?}", area);
+    }
 
-    let json: String = serde_json::to_string_pretty(&deserialized).unwrap();
+    let serialized: String = serde_yaml::to_string(&area).unwrap();
 
-    println!("---");
-    println!("{}", json);
+    if opt.debug {
+        println!("{}", serialized);
+    }
+
+    let json: String = serde_json::to_string_pretty(&area).unwrap();
+
+    if opt.debug {
+        println!("---");
+        println!("{}", json);
+    }
+
+    let result = evaluate::evaluate_area(data.courses, data.overrides, data.fulfillments, area);
+
+    // println!("{}", serde_yaml::to_string(&result).unwrap());
 }

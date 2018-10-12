@@ -2,9 +2,9 @@ use std::collections::BTreeMap;
 
 use expressions::*;
 
-type OverrideMap = BTreeMap<String, bool>;
-type FulfillmentMap = BTreeMap<String, Course>;
-type CourseList = Vec<Course>;
+pub type OverrideMap = BTreeMap<String, bool>;
+pub type FulfillmentMap = BTreeMap<String, Course>;
+pub type CourseList = Vec<Course>;
 
 // the input to `evaluate`
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -15,7 +15,7 @@ pub struct AreaOfStudy {
     pub area_name: String,
     #[serde(rename = "revision")]
     pub area_revision: String,
-    #[serde(rename = "slug", default)]
+    #[serde(rename = "slug")]
     pub area_url: Option<String>,
     pub result: HansonExpression,
     pub children: Vec<Requirement>,
@@ -41,7 +41,6 @@ pub struct Requirement {
     pub result: Option<HansonExpression>,
     pub message: Option<String>,
     pub filter: Option<FilterExpression>,
-    #[serde(default)]
     pub children_share_courses: Option<bool>,
     pub children: Vec<Requirement>,
 }
@@ -71,6 +70,15 @@ pub struct ExpressionResult {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Course {
     pub clbid: String,
+    pub credits: f32,
+    pub crsid: String,
+    pub department: String,
+    pub groupid: Option<String>,
+    pub grouptype: Option<String>,
+    pub level: i32,
+    pub number: i32,
+    pub semester: i32,
+    pub year: i32,
 }
 
 fn compute_expression(
