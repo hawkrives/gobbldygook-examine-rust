@@ -41,7 +41,8 @@ pub struct Requirement {
     pub result: Option<HansonExpression>,
     pub message: Option<String>,
     pub filter: Option<FilterExpression>,
-    pub children_share_courses: bool,
+    #[serde(default)]
+    pub children_share_courses: Option<bool>,
     pub children: Vec<Requirement>,
 }
 

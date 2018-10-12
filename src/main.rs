@@ -4,6 +4,9 @@
 #[macro_use]
 extern crate serde_derive;
 
+extern crate serde_json;
+extern crate serde_yaml;
+
 mod evaluate;
 mod expressions;
 mod parse;
@@ -26,7 +29,7 @@ fn main2() {
         })),
         message: None,
         filter: Option::None,
-        children_share_courses: false,
+        children_share_courses: Some(false),
         children: vec![],
     };
 
@@ -55,5 +58,17 @@ fn main() {
         .read_to_string(&mut area)
         .expect("Unabled to read stdin");
 
-    parse(area);
+    let deserialized = parse(area);
+
+    println!("---");
+    println!("{:?}", deserialized);
+
+    let serialized: String = serde_yaml::to_string(&deserialized).unwrap();
+
+    println!("{}", serialized);
+
+    let json: String = serde_json::to_string_pretty(&deserialized).unwrap();
+
+    println!("---");
+    println!("{}", json);
 }
