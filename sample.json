@@ -12,7 +12,7 @@
       },
       {
         "type": "Course",
-        "department": "CSCI",
+        "department": ["CSCI"],
         "number": 121
       }
     ]
@@ -27,7 +27,7 @@
           "children": [],
           "result": {
             "type": "Course",
-            "department": "ASIAN",
+            "department": ["ASIAN"],
             "number": 130
           }
         },
@@ -36,7 +36,7 @@
           "children": [],
           "result": {
             "type": "Course",
-            "department": "DANCE",
+            "department": ["DANCE"],
             "number": 101
           }
         }

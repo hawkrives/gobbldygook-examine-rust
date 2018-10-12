@@ -1,28 +1,36 @@
-use evaluate::Course as FullCourse;
-use evaluate::CourseList;
-use evaluate::ExpressionResult;
-use evaluate::Requirement;
-use expressions::{FilterExpression, HansonExpression};
+use evaluate::{Course as FullCourse, CourseList, ExpressionResult, Requirement};
+use expressions::{CourseExpression, HansonExpression};
 
-enum Coin {
-    Penny,
-    Nickel,
-    Dime,
-    Quarter,
-}
+fn expr_course(
+    expression: CourseExpression,
+    courses: CourseList,
+    dirty: Vec<FullCourse>,
+    is_needed: bool,
+) -> ExpressionResult {
+    let success = false;
+    let mut matched_courses = vec![];
+    let was_evaluated = true;
 
-fn value_in_cents(coin: Coin) -> u32 {
-    match coin {
-        Coin::Penny => 1,
-        Coin::Nickel => 5,
-        Coin::Dime => 10,
-        Coin::Quarter => 25,
+    for c in courses {
+        // println!("{:?} == {:?}", c.department, expression.department);
+        if c == expression {
+            // println!("success!");
+            matched_courses.push(c);
+        } else {
+            // println!("aww...");
+        }
+    }
+
+    ExpressionResult {
+        expression: HansonExpression::Course(expression),
+        was_evaluated,
+        matched_courses,
+        success,
     }
 }
 
 pub fn expression(
     expression: HansonExpression,
-    filter: Option<FilterExpression>,
     children: Vec<Requirement>,
     courses: CourseList,
     dirty: Vec<FullCourse>,
@@ -30,45 +38,45 @@ pub fn expression(
 ) -> ExpressionResult {
     let success = false;
 
-    match expression.clone() {
-        HansonExpression::Course(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::Of(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::Reference(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::BooleanOr(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::BooleanAnd(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::Modifier(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::Occurrence(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-        HansonExpression::Where(expr) => {
-            println!("{:?}", expr);
-            ()
-        }
-    };
-
-    ExpressionResult {
+    let default_result = ExpressionResult {
         expression: expression.clone(),
         matched_courses: vec![],
         success: success,
         was_evaluated: true,
+    };
+
+    match expression.clone() {
+        HansonExpression::Course(expr) => {
+            println!("{:?}", expr);
+            expr_course(expr, courses, dirty, true)
+        }
+        HansonExpression::Of(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::Reference(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::BooleanOr(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::BooleanAnd(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::Modifier(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::Occurrence(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
+        HansonExpression::Where(expr) => {
+            println!("{:?}", expr);
+            default_result
+        }
     }
 }

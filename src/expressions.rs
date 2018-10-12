@@ -1,9 +1,130 @@
 extern crate serde;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+use std::collections::HashSet;
+
+use evaluate::Course as FullCourse;
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct CourseExpression {
-    pub department: String,
-    pub number: i16,
+    pub department: Vec<String>,
+    pub number: i32,
+    pub level: Option<i32>,
+    pub semester: Option<i32>,
+    pub year: Option<i32>,
+}
+
+fn compare_departments(lhs_depts: &Vec<String>, rhs_depts: &Vec<String>) -> bool {
+    let self_depts: HashSet<String> = lhs_depts.clone().into_iter().collect();
+    let other_depts: HashSet<String> = rhs_depts.clone().into_iter().collect();
+    let diff: Vec<&String> = self_depts.symmetric_difference(&other_depts).collect();
+
+    diff.len() == 0
+}
+
+impl PartialEq<FullCourse> for CourseExpression {
+    fn eq(&self, other: &FullCourse) -> bool {
+        if !compare_departments(&self.department, &other.department) {
+            return false;
+        }
+
+        if self.number != other.number {
+            return false;
+        }
+
+        if let Some(year) = self.year {
+            if year == other.year {
+                return false;
+            }
+        }
+
+        if let Some(semester) = self.semester {
+            if semester == other.semester {
+                return false;
+            }
+        }
+
+        true
+    }
+}
+
+impl PartialEq<CourseExpression> for FullCourse {
+    fn eq(&self, other: &CourseExpression) -> bool {
+        if !compare_departments(&self.department, &other.department) {
+            return false;
+        }
+
+        if self.number != other.number {
+            return false;
+        }
+
+        if let Some(other_semester) = other.semester {
+            if self.semester == other_semester {
+                return false;
+            }
+        }
+
+        if let Some(other_year) = other.year {
+            if self.year == other_year {
+                return false;
+            }
+        }
+
+        true
+    }
+}
+
+#[test]
+fn courses_vs_course_exprs() {
+    let course = FullCourse {
+        clbid: "1".to_string(),
+        credits: 1.0,
+        crsid: "1".to_string(),
+        department: vec!["CSCI".to_string()],
+        groupid: Some("1".to_string()),
+        grouptype: Some("R".to_string()),
+        level: 100,
+        number: 101,
+        section: Some("A".to_string()),
+        semester: 1,
+        year: 2000,
+    };
+
+    let yes_expr = CourseExpression {
+        department: vec!["CSCI".to_string()],
+        level: None,
+        number: 101,
+        semester: None,
+        year: None,
+    };
+
+    assert_eq!(yes_expr, course);
+}
+
+#[test]
+fn courses_vs_course_exprs_diff_depts() {
+    let course = FullCourse {
+        clbid: "1".to_string(),
+        credits: 1.0,
+        crsid: "1".to_string(),
+        department: vec!["CSCI".to_string()],
+        groupid: Some("1".to_string()),
+        grouptype: Some("R".to_string()),
+        level: 100,
+        number: 101,
+        section: Some("A".to_string()),
+        semester: 1,
+        year: 2000,
+    };
+
+    let no_expr = CourseExpression {
+        department: vec!["ASIAN".to_string()],
+        level: None,
+        number: 101,
+        semester: None,
+        year: None,
+    };
+
+    assert_ne!(no_expr, course);
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -221,5 +342,4 @@ pub enum HansonExpression {
     Modifier(ModifierExpression),
     Occurrence(OccurrenceExpression),
     Where(WhereExpression),
-    // FilterExpression
 }

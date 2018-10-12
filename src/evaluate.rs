@@ -28,7 +28,7 @@ pub struct EvaluationResult {
     pub area: AreaOfStudy,
     pub progress: (usize, usize),
     pub error: Option<String>,
-    pub matched_courses: Vec<Course>,
+    // pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
     pub children_results: Vec<RequirementResult>,
@@ -68,9 +68,10 @@ pub struct Course {
     pub clbid: String,
     pub credits: f32,
     pub crsid: String,
-    pub department: String,
+    pub department: Vec<String>,
     pub groupid: Option<String>,
     pub grouptype: Option<String>,
+    pub section: Option<String>,
     pub level: i32,
     pub number: i32,
     pub semester: i32,
@@ -143,7 +144,6 @@ fn compute_requirement(
 
             computed_result = compute_expression(
                 result_expr,
-                requirement.filter,
                 requirement.children.clone(),
                 courses,
                 vec![],
@@ -152,7 +152,6 @@ fn compute_requirement(
         } else {
             computed_result = compute_expression(
                 result_expr,
-                requirement.filter,
                 requirement.children.clone(),
                 courses,
                 vec![],
@@ -171,13 +170,13 @@ fn compute_requirement(
     }
 
     RequirementResult {
-        applied_fulfillment: applied_fulfillment,
-        matched_courses: matched_courses,
-        success: success,
-        was_evaluated: was_evaluated,
+        applied_fulfillment,
+        matched_courses,
+        success,
+        was_evaluated,
         overridden: was_overridden,
         requirement: requirement.clone(),
-        children_results: children_results,
+        children_results,
     }
 }
 
@@ -217,9 +216,10 @@ pub fn evaluate_area(
             )
         }).collect();
 
+    // let matched_courses = results.iter().map(|res| res.matched_courses).
+
     let result = compute_expression(
         area_of_study.result.clone(),
-        None,
         area_of_study.children.clone(),
         courses,
         vec![],
@@ -228,14 +228,14 @@ pub fn evaluate_area(
 
     let computed_result = result.success;
 
-    let progress = compute_progress(results);
+    let progress = compute_progress(results.clone());
 
     EvaluationResult {
         area: area_of_study,
-        matched_courses: vec![],
+        // matched_courses: vec![],
         success: computed_result,
         was_evaluated: true,
-        children_results: vec![],
+        children_results: results,
         error: None,
         progress: progress,
     }
