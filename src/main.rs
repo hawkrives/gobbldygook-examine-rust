@@ -15,7 +15,7 @@ use expressions::HansonExpression;
 use expressions::ReferenceExpression;
 use parse::parse;
 use std::collections::BTreeMap;
-use std::fs;
+use std::io::{self, Read};
 
 fn main2() {
     let r = Requirement {
@@ -49,25 +49,11 @@ fn main2() {
 }
 
 fn main() {
-    let area = fs::read_to_string("/Users/rives/Projects/gobbldygook-examine-rust/sample.json")
-        .expect("Unable to read file");
-
-    // let area = r#"
-    //     type: major
-    //     name: Asian Studies
-    //     revision: 2012-14
-
-    //     result: Requirement & CSCI 121
-
-    //     Requirement:
-    //         Asian Studies:
-    //             result: ASIAN 130
-
-    //         Dance:
-    //             result: DANCE 101
-
-    //         result: all of (Asian Studies, Dance)
-    // "#.to_string();
+    // let area = fs::read_to_string("./sample.json").expect("Unable to read file");
+    let mut area = String::new();
+    io::stdin()
+        .read_to_string(&mut area)
+        .expect("Unabled to read stdin");
 
     parse(area);
 }

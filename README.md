@@ -1,3 +1,11 @@
+Usage:
+
+```
+cargo run < ./sample.json
+```
+
+---
+
 At a high level, `@gob/hanson-format` will take this:
 
 ```yaml
@@ -56,7 +64,7 @@ requirements:
   - name: Requirement
     result:
       type: of
-      counter: {value: 2, word: 'all'}
+      counter: {num: null, was: 'all', operator: Eq}
       values:
         - type: reference
           requirement: Asian Studies
