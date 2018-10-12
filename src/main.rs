@@ -70,5 +70,5 @@ fn main() {
 
     let result = evaluate::evaluate_area(data.courses, data.overrides, data.fulfillments, area);
 
-    // println!("{}", serde_yaml::to_string(&result).unwrap());
+    println!("{}", serde_yaml::to_string(&result).unwrap());
 }

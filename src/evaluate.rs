@@ -26,7 +26,7 @@ pub struct AreaOfStudy {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EvaluationResult {
     pub area: AreaOfStudy,
-    pub progress: (i32, i32),
+    pub progress: (usize, usize),
     pub error: Option<String>,
     pub matched_courses: Vec<Course>,
     pub success: bool,
@@ -182,18 +182,14 @@ fn compute_requirement(
     }
 }
 
-fn compute_progress(evaluation_result: ExpressionResult) -> (i32, i32) {
-    // match evaluation_result.requirement.success {
-    //     HansonExpression::Course(expr) => expr,
-    //     HansonExpression::Of(expr) => expr,
-    //     HansonExpression::Reference(expr) => expr,
-    // };
+fn compute_progress(results: Vec<RequirementResult>) -> (usize, usize) {
+    let successes: Vec<bool> = results
+        .iter()
+        .map(|r| r.success)
+        .filter(|&pass| pass == true)
+        .collect();
 
-    if evaluation_result.success {
-        return (1, 1);
-    }
-
-    (0, 1)
+    (successes.len(), results.len())
 }
 
 pub fn evaluate_area(
@@ -233,7 +229,7 @@ pub fn evaluate_area(
 
     let computed_result = result.success;
 
-    let progress = compute_progress(result);
+    let progress = compute_progress(results);
 
     EvaluationResult {
         area: area_of_study,
