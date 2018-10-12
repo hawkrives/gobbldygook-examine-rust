@@ -15,6 +15,7 @@ use expressions::HansonExpression;
 use expressions::ReferenceExpression;
 use parse::parse;
 use std::collections::BTreeMap;
+use std::fs;
 
 fn main2() {
     let r = Requirement {
@@ -47,22 +48,25 @@ fn main2() {
 }
 
 fn main() {
-    let area = r#"
-        type: major
-        name: Asian Studies
-        revision: 2012-14
+    let area = fs::read_to_string("/Users/rives/Projects/gobbldygook-examine-rust/sample.json")
+        .expect("Unable to read file");
 
-        result: Requirement & CSCI 121
+    // let area = r#"
+    //     type: major
+    //     name: Asian Studies
+    //     revision: 2012-14
 
-        Requirement:
-            Asian Studies:
-                result: ASIAN 130
+    //     result: Requirement & CSCI 121
 
-            Dance:
-                result: DANCE 101
+    //     Requirement:
+    //         Asian Studies:
+    //             result: ASIAN 130
 
-            result: all of (Asian Studies, Dance)
-    "#.to_string();
+    //         Dance:
+    //             result: DANCE 101
+
+    //         result: all of (Asian Studies, Dance)
+    // "#.to_string();
 
     parse(area);
 }

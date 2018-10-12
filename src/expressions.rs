@@ -1,53 +1,55 @@
-#[derive(Debug, Clone)]
+extern crate serde;
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CourseExpression {
     pub department: String,
     pub number: i16,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum HansonCounterOperator {
     Eq,
     Gte,
     Lte,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum HansonCounterShorthand {
     All,
     Any,
     None,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ExpressionCounter {
     pub operator: HansonCounterOperator,
     pub was: Option<HansonCounterShorthand>,
     pub num: f32,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum QualificationStaticValue {
     Number(i32),
     String(String),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QualificationBooleanOrValue {
     pub values: Vec<QualificationStaticValue>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QualificationBooleanAndValue {
     pub values: Vec<QualificationStaticValue>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum QualificationFunctionName {
     Max,
     Min,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QualificationFunctionValue {
     pub name: QualificationFunctionName,
     pub prop: String,
@@ -55,7 +57,7 @@ pub struct QualificationFunctionValue {
     pub computed: QualificationStaticValue,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum QualificationValue {
     Static(QualificationStaticValue),
     BooleanOr(QualificationBooleanOrValue),
@@ -63,7 +65,7 @@ pub enum QualificationValue {
     Function(QualificationFunctionValue),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum QualificationOperator {
     Lte,
     Lt,
@@ -73,59 +75,59 @@ pub enum QualificationOperator {
     Neq,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OrQualification {
     pub values: Vec<Qualifier>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AndQualification {
     pub values: Vec<Qualifier>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Qualification {
     pub key: String,
     pub value: QualificationValue,
     pub operator: QualificationOperator,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Qualifier {
     Qualification,
     OrQualification,
     AndQualification,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OfExpression {
     pub count: ExpressionCounter,
     pub of: Vec<HansonExpression>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ReferenceExpression {
     pub requirement: String,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BooleanOrExpression {
     pub values: Vec<HansonExpression>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BooleanAndExpression {
     pub values: Vec<HansonExpression>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ModifierWhatEnum {
     Course,
     Credit,
     Department,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ModifierWhereExpression {
     pub count: ExpressionCounter,
     pub what: ModifierWhatEnum,
@@ -133,14 +135,14 @@ pub struct ModifierWhereExpression {
     pub qualification: Qualification,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ModifierFilterExpression {
     pub count: ExpressionCounter,
     pub what: ModifierWhatEnum,
     pub besides: Option<CourseExpression>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ModifierFilterWhereExpression {
     pub count: ExpressionCounter,
     pub what: ModifierWhatEnum,
@@ -148,7 +150,8 @@ pub struct ModifierFilterWhereExpression {
     pub qualifier: Qualifier,
 }
 
-#[derive(Debug, Clone)]
+// TODO: support "children: all"
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ModifierChildrenExpression {
     pub count: ExpressionCounter,
     pub what: ModifierWhatEnum,
@@ -156,7 +159,8 @@ pub struct ModifierChildrenExpression {
     pub children: Vec<ReferenceExpression>,
 }
 
-#[derive(Debug, Clone)]
+// TODO: support "children: all"
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ModifierChildrenWhereExpression {
     pub count: ExpressionCounter,
     pub what: ModifierWhatEnum,
@@ -165,7 +169,7 @@ pub struct ModifierChildrenWhereExpression {
     pub qualifier: Qualifier,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ModifierExpression {
     Where(ModifierWhereExpression),
     Filter(ModifierFilterExpression),
@@ -174,38 +178,39 @@ pub enum ModifierExpression {
     ChildrenWhere(ModifierChildrenWhereExpression),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OccurrenceExpression {
     pub course: CourseExpression,
     pub count: ExpressionCounter,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct WhereExpression {
     pub qualifier: Qualifier,
     pub count: ExpressionCounter,
     pub distinct: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FilterOfExpression {
     pub distinct: bool,
     pub of: Vec<CourseExpression>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FilterWhereExpression {
     pub distinct: bool,
     pub qualifier: Qualifier,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum FilterExpression {
     FilterOfExpression,
     FilterWhereExpression,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "type")]
 pub enum HansonExpression {
     Course(CourseExpression),
     Of(OfExpression),

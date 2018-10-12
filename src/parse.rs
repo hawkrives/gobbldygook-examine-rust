@@ -2,7 +2,7 @@ extern crate serde;
 extern crate serde_json;
 extern crate serde_yaml;
 
-use std::collections::HashMap;
+use expressions::HansonExpression;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct HansonInput {
@@ -13,21 +13,22 @@ struct HansonInput {
     #[serde(rename = "revision")]
     area_revision: String,
 
-    result: String,
+    #[serde(rename = "slug", default)]
+    area_url: Option<String>,
 
-    #[serde(flatten)]
-    children: HashMap<String, HansonInputRequirement>,
+    result: HansonExpression,
+
+    children: Vec<HansonInputRequirement>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 struct HansonInputRequirement {
-    result: String,
-    #[serde(flatten)]
-    children: HashMap<String, HansonInputRequirement>,
+    result: serde_json::Value,
+    children: Vec<HansonInputRequirement>,
 }
 
 pub fn parse(input: String) {
-    let deserialized: HansonInput = serde_yaml::from_str(&input).unwrap();
+    let deserialized: HansonInput = serde_json::from_str(&input).unwrap();
 
     println!("---");
     println!("{:?}", deserialized);
@@ -36,8 +37,8 @@ pub fn parse(input: String) {
 
     println!("{}", serialized);
 
-    let json: String = serde_json::to_string_pretty(&deserialized).unwrap();
+    // let json: String = serde_json::to_string_pretty(&deserialized).unwrap();
 
-    println!("---");
-    println!("{}", json);
+    // println!("---");
+    // println!("{}", json);
 }
