@@ -1,7 +1,7 @@
 Usage:
 
 ```
-cargo run < ./sample.json
+cargo run ./sample.json ./student.yaml
 ```
 
 ---
