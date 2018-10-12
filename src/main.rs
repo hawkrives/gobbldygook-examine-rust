@@ -12,50 +12,9 @@ mod evaluate;
 mod expressions;
 mod parse;
 
-use evaluate::AreaOfStudy;
-use evaluate::Requirement;
-use expressions::CourseExpression;
-use expressions::HansonExpression;
-use expressions::ReferenceExpression;
-
-use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 use structopt::StructOpt;
-
-// extern crate clap;
-// use clap::App;
-
-fn main2() {
-    let r = Requirement {
-        name: "Requirement".to_string(),
-        result: Some(HansonExpression::Course(CourseExpression {
-            department: "CSCI".to_string(),
-            number: 121,
-        })),
-        message: None,
-        filter: Option::None,
-        children_share_courses: Some(false),
-        children: vec![],
-    };
-
-    let v = vec![r];
-
-    let a = AreaOfStudy {
-        area_name: "Asian Studies".to_string(),
-        area_type: "major".to_string(),
-        area_revision: "2012-13".to_string(),
-        area_url: None,
-        children: v,
-        result: HansonExpression::Reference(ReferenceExpression {
-            requirement: "Requirement".to_string(),
-        }),
-    };
-
-    let result = evaluate::evaluate_area(vec![], BTreeMap::new(), BTreeMap::new(), a);
-
-    println!("{:#?}", result);
-}
 
 /// A basic example
 #[derive(StructOpt, Debug)]
