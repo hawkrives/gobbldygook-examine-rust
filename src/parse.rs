@@ -23,7 +23,8 @@ struct HansonInput {
 
 #[derive(Serialize, Deserialize, Debug)]
 struct HansonInputRequirement {
-    result: serde_json::Value,
+    name: String,
+    result: HansonExpression,
     children: Vec<HansonInputRequirement>,
 }
 

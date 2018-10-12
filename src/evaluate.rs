@@ -7,17 +7,22 @@ type FulfillmentMap = BTreeMap<String, Course>;
 type CourseList = Vec<Course>;
 
 // the input to `evaluate`
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AreaOfStudy {
-    pub area_name: String,
+    #[serde(rename = "type")]
     pub area_type: String,
+    #[serde(rename = "name")]
+    pub area_name: String,
+    #[serde(rename = "revision")]
     pub area_revision: String,
+    #[serde(rename = "slug", default)]
+    pub area_url: Option<String>,
     pub result: HansonExpression,
-    pub requirements: Vec<Requirement>,
+    pub children: Vec<Requirement>,
 }
 
 // the output of `evaluate`
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EvaluationResult {
     pub area: AreaOfStudy,
     pub progress: (i32, i32),
@@ -30,7 +35,7 @@ pub struct EvaluationResult {
     pub children_results: Vec<RequirementResult>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Requirement {
     pub name: String,
     pub result: Option<HansonExpression>,
@@ -40,7 +45,7 @@ pub struct Requirement {
     pub children: Vec<Requirement>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RequirementResult {
     pub applied_fulfillment: Option<Course>,
     pub matched_courses: Vec<Course>,
@@ -52,7 +57,7 @@ pub struct RequirementResult {
     pub requirement: Requirement,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ExpressionResult {
     pub expression: HansonExpression,
     pub matched_courses: Vec<Course>,
@@ -62,7 +67,7 @@ pub struct ExpressionResult {
     pub overridden: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Course {
     pub clbid: String,
 }
@@ -219,7 +224,7 @@ pub fn evaluate_area(
     let path = vec![name, kind];
 
     let results: Vec<RequirementResult> = area_of_study
-        .requirements
+        .children
         .iter()
         .map(|req| {
             compute_requirement(
@@ -234,7 +239,7 @@ pub fn evaluate_area(
     let result = compute_expression(
         area_of_study.result.clone(),
         None,
-        area_of_study.requirements.clone(),
+        area_of_study.children.clone(),
         courses,
         vec![],
         None,

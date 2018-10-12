@@ -45,8 +45,7 @@
         "type": "Of",
         "count": {
           "operator": "Eq",
-          "was": "all",
-          "num": 2
+          "was": "All"
         },
         "of": [
           {

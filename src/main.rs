@@ -36,7 +36,8 @@ fn main2() {
         area_name: "Asian Studies".to_string(),
         area_type: "major".to_string(),
         area_revision: "2012-13".to_string(),
-        requirements: v,
+        area_url: None,
+        children: v,
         result: HansonExpression::Reference(ReferenceExpression {
             requirement: "Requirement".to_string(),
         }),
