@@ -8,6 +8,7 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate serde_yaml;
 
+mod compute;
 mod evaluate;
 mod expressions;
 mod parse;

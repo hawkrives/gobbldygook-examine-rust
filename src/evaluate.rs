@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 
+use compute::expression as compute_expression;
 use expressions::*;
 
 pub type OverrideMap = BTreeMap<String, bool>;
@@ -30,8 +31,6 @@ pub struct EvaluationResult {
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
-    pub did_count: bool, // what does this do?
-    pub overridden: bool,
     pub children_results: Vec<RequirementResult>,
 }
 
@@ -51,7 +50,6 @@ pub struct RequirementResult {
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
-    pub did_count: bool, // what does this do?
     pub overridden: bool,
     pub children_results: Vec<RequirementResult>,
     pub requirement: Requirement,
@@ -63,7 +61,6 @@ pub struct ExpressionResult {
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
-    pub did_count: bool, // what does this do?
     pub overridden: bool,
 }
 
@@ -79,24 +76,6 @@ pub struct Course {
     pub number: i32,
     pub semester: i32,
     pub year: i32,
-}
-
-fn compute_expression(
-    expression: HansonExpression,
-    filter: Option<FilterExpression>,
-    children: Vec<Requirement>,
-    courses: CourseList,
-    dirty: Vec<Course>,
-    fulfillment: Option<Course>,
-) -> ExpressionResult {
-    ExpressionResult {
-        expression: expression,
-        matched_courses: vec![],
-        success: true,
-        was_evaluated: true,
-        did_count: true,
-        overridden: false,
-    }
 }
 
 fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
@@ -140,7 +119,6 @@ fn compute_requirement(
             )
         }).collect();
 
-    let did_count = false;
     let mut success = false;
     let mut was_evaluated = false;
     let mut matched_courses: Vec<Course> = vec![];
@@ -198,7 +176,6 @@ fn compute_requirement(
         matched_courses: matched_courses,
         success: success,
         was_evaluated: was_evaluated,
-        did_count: did_count,
         overridden: was_overridden,
         requirement: requirement.clone(),
         children_results: children_results,
@@ -263,8 +240,6 @@ pub fn evaluate_area(
         matched_courses: vec![],
         success: computed_result,
         was_evaluated: true,
-        did_count: false, // what does this do?
-        overridden: false,
         children_results: vec![],
         error: None,
         progress: progress,
