@@ -61,7 +61,6 @@ pub struct ExpressionResult {
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub was_evaluated: bool,
-    pub overridden: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
