@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 mod compute;
 mod evaluate;
 mod expressions;
