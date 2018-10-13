@@ -1,8 +1,6 @@
-extern crate serde;
-
+use crate::evaluate::Course as FullCourse;
+use serde_derive::{Deserialize, Serialize};
 use std::collections::HashSet;
-
-use evaluate::Course as FullCourse;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct CourseExpression {

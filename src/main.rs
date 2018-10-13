@@ -1,13 +1,6 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-#[macro_use]
-extern crate structopt;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-extern crate serde_yaml;
-
 mod compute;
 mod evaluate;
 mod expressions;

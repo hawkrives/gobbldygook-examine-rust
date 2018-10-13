@@ -1,7 +1,7 @@
+use crate::compute::expression as compute_expression;
+use crate::expressions::*;
+use serde_derive::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-
-use compute::expression as compute_expression;
-use expressions::*;
 
 pub type OverrideMap = BTreeMap<String, bool>;
 pub type FulfillmentMap = BTreeMap<String, Course>;

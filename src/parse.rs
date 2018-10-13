@@ -1,14 +1,12 @@
-extern crate serde;
-extern crate serde_json;
-extern crate serde_yaml;
+use serde_derive::{Deserialize, Serialize};
 
-use evaluate::AreaOfStudy;
+use crate::evaluate::AreaOfStudy;
 
 pub fn parse_area(input: String) -> AreaOfStudy {
     serde_json::from_str(&input).unwrap()
 }
 
-use evaluate::{CourseList, FulfillmentMap, OverrideMap};
+use crate::evaluate::{CourseList, FulfillmentMap, OverrideMap};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DataStruct {

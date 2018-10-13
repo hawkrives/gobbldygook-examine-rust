@@ -1,5 +1,5 @@
-use evaluate::{Course as FullCourse, CourseList, ExpressionResult, Requirement};
-use expressions::{CourseExpression, HansonExpression};
+use crate::evaluate::{Course as FullCourse, CourseList, ExpressionResult, Requirement};
+use crate::expressions::{CourseExpression, HansonExpression};
 
 fn expr_course(
     expression: CourseExpression,
