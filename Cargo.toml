@@ -2,6 +2,7 @@
 name = "gobbldygook-examine-rust"
 version = "0.1.0"
 authors = ["Hawken Rives <hawkrives@fastmail.fm>"]
+edition = "2018"
 
 [dependencies]
 serde = "1.0"
