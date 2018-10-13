@@ -1,4 +1,4 @@
-use crate::compute::expression as compute_expression;
+use crate::compute::compute_expression;
 use crate::expressions::*;
 use serde_derive::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -140,8 +140,6 @@ fn compute_requirement(
             courses = apply_filter(filter, courses.clone());
         }
 
-        // TODO: assert that requirement.result is not empty – probably in hanson-format, rather than examine-student
-
         let fulfillment = fulfillments.get(&make_requirement_path(&path));
         if let Some(value) = fulfillment {
             applied_fulfillment = Some(value.clone());
@@ -149,19 +147,14 @@ fn compute_requirement(
 
             computed_result = compute_expression(
                 result_expr,
-                requirement.children.clone(),
+                &requirement.children,
                 courses,
                 vec![],
                 Some(value.clone()),
             );
         } else {
-            computed_result = compute_expression(
-                result_expr,
-                requirement.children.clone(),
-                courses,
-                vec![],
-                None,
-            );
+            computed_result =
+                compute_expression(result_expr, &requirement.children, courses, vec![], None);
         }
 
         let mut success = computed_result.success;
@@ -235,7 +228,7 @@ pub fn evaluate_area(
 
     let result = compute_expression(
         area_of_study.result.clone(),
-        area_of_study.children.clone(),
+        &area_of_study.children,
         courses,
         vec![],
         None,

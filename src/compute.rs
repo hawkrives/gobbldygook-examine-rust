@@ -1,5 +1,7 @@
 use crate::evaluate::{Course as FullCourse, CourseList, ExpressionResult, Requirement};
-use crate::expressions::{CourseExpression, HansonExpression};
+use crate::expressions::{
+    BooleanAndExpression, BooleanOrExpression, CourseExpression, HansonExpression,
+};
 
 fn expr_course(
     expression: CourseExpression,
@@ -28,9 +30,63 @@ fn expr_course(
     }
 }
 
-pub fn expression(
+fn expr_boolean_or(
+    expression: BooleanOrExpression,
+    children: &[Requirement],
+    courses: CourseList,
+    dirty: Vec<FullCourse>,
+    is_needed: bool,
+) -> ExpressionResult {
+    let success = false;
+    let mut matched_courses = vec![];
+
+    let mut have_any_been_true = false;
+
+    for expr in expression.clone().values {
+        let result = compute_expression(expr, children, courses.clone(), dirty.clone(), None);
+
+        matched_courses.extend_from_slice(&result.matched_courses);
+
+        have_any_been_true = have_any_been_true || result.success;
+    }
+
+    ExpressionResult {
+        expression: HansonExpression::BooleanOr(expression),
+        matched_courses,
+        success: have_any_been_true,
+    }
+}
+
+fn expr_boolean_and(
+    expression: BooleanAndExpression,
+    children: &[Requirement],
+    courses: CourseList,
+    dirty: Vec<FullCourse>,
+    is_needed: bool,
+) -> ExpressionResult {
+    let success = false;
+    let mut matched_courses = vec![];
+
+    let mut have_all_been_true = false;
+
+    for expr in expression.clone().values {
+        let result = compute_expression(expr, children, courses.clone(), dirty.clone(), None);
+
+        matched_courses.extend_from_slice(&result.matched_courses);
+
+        have_all_been_true = have_all_been_true && result.success;
+    }
+
+    ExpressionResult {
+        expression: HansonExpression::BooleanAnd(expression),
+        matched_courses,
+        success: have_all_been_true,
+    }
+}
+
+pub fn compute_expression(
     expression: HansonExpression,
-    children: Vec<Requirement>,
+    children: &[Requirement],
     courses: CourseList,
     dirty: Vec<FullCourse>,
     fulfillment: Option<FullCourse>,
@@ -58,11 +114,11 @@ pub fn expression(
         }
         HansonExpression::BooleanOr(expr) => {
             println!("{:?}", expr);
-            default_result
+            expr_boolean_or(expr, children, courses, dirty, true)
         }
         HansonExpression::BooleanAnd(expr) => {
             println!("{:?}", expr);
-            default_result
+            expr_boolean_and(expr, children, courses, dirty, true)
         }
         HansonExpression::Modifier(expr) => {
             println!("{:?}", expr);
