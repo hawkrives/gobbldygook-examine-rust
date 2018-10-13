@@ -48,17 +48,13 @@ fn main() {
         println!("{:?}", area);
     }
 
-    let serialized: String = serde_yaml::to_string(&area).unwrap();
-
     if opt.debug {
-        println!("{}", serialized);
+        println!("{}", serde_yaml::to_string(&area).unwrap());
     }
-
-    let json: String = serde_json::to_string_pretty(&area).unwrap();
 
     if opt.debug {
         println!("---");
-        println!("{}", json);
+        println!("{}", serde_json::to_string_pretty(&area).unwrap());
     }
 
     let result = evaluate::evaluate_area(data.courses, data.overrides, data.fulfillments, area);

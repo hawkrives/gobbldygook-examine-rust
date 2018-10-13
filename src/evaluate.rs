@@ -82,7 +82,7 @@ fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
     courses
 }
 
-fn make_requirement_path(path: &Vec<String>) -> String {
+fn make_requirement_path(path: &Vec<&str>) -> String {
     path.join("\x1C").to_lowercase()
 }
 
@@ -95,16 +95,16 @@ fn apply_fulfillment_to_expression(
 
 fn compute_requirement(
     requirement: Requirement,
-    path: Vec<String>,
+    path: Vec<&str>,
     mut courses: CourseList,
     overrides: OverrideMap,
     fulfillments: FulfillmentMap,
 ) -> RequirementResult {
     let req_name = requirement.name.clone();
 
-    let mut path_to_here: Vec<String> = vec![];
+    let mut path_to_here: Vec<&str> = vec![];
     path_to_here.extend(path.iter().cloned());
-    path_to_here.extend(vec![req_name]);
+    path_to_here.push(&req_name);
 
     let children_results: Vec<RequirementResult> = requirement
         .children
@@ -201,7 +201,7 @@ pub fn evaluate_area(
 
     let name = area_of_study.area_name.clone();
     let kind = area_of_study.area_type.clone();
-    let path = vec![name, kind];
+    let path: Vec<&str> = vec![&name, &kind];
 
     let results: Vec<RequirementResult> = area_of_study
         .children
