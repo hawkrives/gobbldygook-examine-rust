@@ -114,7 +114,7 @@ pub fn compute_expression(
         success: success,
     };
 
-    match expression.clone() {
+    match expression {
         HansonExpression::Course(expr) => {
             println!("{:?}", expr);
             expr_course(expr, courses, dirty, true)
