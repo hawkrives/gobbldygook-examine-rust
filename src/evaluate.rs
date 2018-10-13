@@ -73,10 +73,10 @@ pub struct ExpressionResult {
     pub success: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Course {
     pub clbid: String,
-    pub credits: f32,
+    pub credits: ordered_float::OrderedFloat<f32>,
     pub crsid: String,
     pub department: Vec<String>,
     pub groupid: Option<String>,
@@ -88,8 +88,112 @@ pub struct Course {
     pub year: i32,
 }
 
-fn apply_filter(_filter: FilterExpression, courses: CourseList) -> CourseList {
-    courses
+struct FilterByArgs {
+    filtered: Vec<Course>,
+    clause: Qualifier,
+    distinct: bool,
+    all_courses: Option<Vec<Course>>,
+    counter: Option<ExpressionCounter>,
+}
+
+fn filter_by_qualification(
+    filtered: Vec<Course>,
+    clause: Qualification,
+    distinct: bool,
+    all_courses: Option<Vec<Course>>,
+    counter: Option<ExpressionCounter>,
+) -> Vec<Course> {
+    let mut filtered = filtered.clone();
+
+    let _computed_value: Option<i32> = None;
+
+    if let QualificationValue::Function(func) = clause.clone().value {
+        let _values = all_courses
+            .unwrap_or(filtered.clone())
+            .into_iter()
+            /*.filter(filter_by_where_clause)*/
+            .map(|c| c);
+        match func.name {
+            QualificationFunctionName::Max => {}
+            QualificationFunctionName::Min => {}
+        };
+    }
+
+    filtered = filtered.into_iter().filter(|c| *c == clause).collect();
+
+    if let Some(counter) = counter {
+        if let Some(num_to_take) = counter.num {
+            match counter.operator {
+                HansonCounterOperator::Lte | HansonCounterOperator::Eq => {
+                    filtered = filtered.into_iter().take(num_to_take as usize).collect()
+                }
+                HansonCounterOperator::Gte => filtered = filtered,
+            }
+        }
+    }
+
+    if distinct {
+        filtered.sort();
+        filtered.dedup();
+    }
+
+    filtered
+}
+
+fn filter_by_where_clause(args: FilterByArgs) -> Vec<Course> {
+    match args.clause {
+        Qualifier::Single(clause) => filter_by_qualification(
+            args.filtered,
+            clause,
+            args.distinct,
+            args.all_courses,
+            args.counter,
+        ),
+        Qualifier::BooleanAnd(clause) => {
+            let mut filtered = args.filtered;
+            for q in clause.values {
+                filtered = filter_by_where_clause(FilterByArgs {
+                    filtered: filtered,
+                    clause: q,
+                    distinct: args.distinct,
+                    all_courses: args.all_courses.clone(),
+                    counter: args.counter.clone(),
+                });
+            }
+            filtered
+        }
+        Qualifier::BooleanOr(clause) => {
+            let mut filtered = args.filtered;
+            for q in clause.values {
+                filtered.extend(filter_by_where_clause(FilterByArgs {
+                    filtered: filtered.clone(),
+                    clause: q,
+                    distinct: args.distinct,
+                    all_courses: args.all_courses.clone(),
+                    counter: args.counter.clone(),
+                }));
+            }
+            filtered.sort();
+            filtered.dedup();
+            filtered
+        }
+    }
+}
+
+fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
+    match filter {
+        FilterExpression::Of(expr) => courses
+            .into_iter()
+            .filter(|c| expr.of.iter().any(|e| e == c))
+            .collect(),
+        FilterExpression::Where(expr) => filter_by_where_clause(FilterByArgs {
+            filtered: courses,
+            clause: expr.qualifier,
+            counter: None,
+            all_courses: None,
+            distinct: false,
+        }),
+    }
 }
 
 fn make_requirement_path(path: &Vec<&str>) -> String {
@@ -135,7 +239,7 @@ fn compute_requirement(
         let mut was_overridden = false;
         let computed_result;
 
-        if let Some(filter) = requirement.filter {
+        if let Some(filter) = requirement.filter.clone() {
             courses = apply_filter(filter, courses.clone());
         }
 

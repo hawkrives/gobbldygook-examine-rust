@@ -1,5 +1,6 @@
 use crate::evaluate::Course as FullCourse;
 use serde_derive::{Deserialize, Serialize};
+use serde_json;
 use std::collections::HashSet;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
@@ -75,7 +76,7 @@ impl PartialEq<CourseExpression> for FullCourse {
 fn courses_vs_course_exprs() {
     let course = FullCourse {
         clbid: "1".to_string(),
-        credits: 1.0,
+        credits: ordered_float::OrderedFloat(1.0),
         crsid: "1".to_string(),
         department: vec!["CSCI".to_string()],
         groupid: Some("1".to_string()),
@@ -102,7 +103,7 @@ fn courses_vs_course_exprs() {
 fn courses_vs_course_exprs_diff_depts() {
     let course = FullCourse {
         clbid: "1".to_string(),
-        credits: 1.0,
+        credits: ordered_float::OrderedFloat(1.0),
         crsid: "1".to_string(),
         department: vec!["CSCI".to_string()],
         groupid: Some("1".to_string()),
@@ -125,6 +126,30 @@ fn courses_vs_course_exprs_diff_depts() {
     assert_ne!(no_expr, course);
 }
 
+impl PartialEq<FullCourse> for Qualifier {
+    fn eq(&self, _other: &FullCourse) -> bool {
+        false
+    }
+}
+
+impl PartialEq<Qualifier> for FullCourse {
+    fn eq(&self, _other: &Qualifier) -> bool {
+        false
+    }
+}
+
+impl PartialEq<FullCourse> for Qualification {
+    fn eq(&self, _other: &FullCourse) -> bool {
+        false
+    }
+}
+
+impl PartialEq<Qualification> for FullCourse {
+    fn eq(&self, _other: &Qualification) -> bool {
+        false
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum HansonCounterOperator {
     Eq,
@@ -143,15 +168,11 @@ pub enum HansonCounterShorthand {
 pub struct ExpressionCounter {
     pub operator: HansonCounterOperator,
     pub was: Option<HansonCounterShorthand>,
-    #[serde(default)]
-    pub num: Option<f32>,
+    // #[serde(default)]
+    pub num: Option<u32>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub enum QualificationStaticValue {
-    Number(i32),
-    String(String),
-}
+type QualificationStaticValue = serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QualificationBooleanOrValue {
@@ -165,21 +186,48 @@ pub struct QualificationBooleanAndValue {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum QualificationFunctionName {
+    #[serde(rename = "max")]
     Max,
+    #[serde(rename = "min")]
     Min,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub enum QualificationFunctionCourseFieldName {
+    #[serde(rename = "gereqs")]
+    GeReq,
+    #[serde(rename = "year")]
+    Year,
+    #[serde(rename = "department")]
+    Department,
+    #[serde(rename = "level")]
+    Level,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QualificationFunctionValue {
     pub name: QualificationFunctionName,
-    pub prop: String,
-    pub qualifier: Qualifier,
-    pub computed: QualificationStaticValue,
+    pub prop: QualificationFunctionCourseFieldName,
+    // TODO: represent this without recursion?
+    // pub qualifier: Qualifier,
+    pub computed: Option<QualificationStaticValue>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct QualificationNumericValue {
+    value: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct QualificationStringValue {
+    value: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "type")]
 pub enum QualificationValue {
-    Static(QualificationStaticValue),
+    Number(QualificationNumericValue),
+    String(QualificationStringValue),
     BooleanOr(QualificationBooleanOrValue),
     BooleanAnd(QualificationBooleanAndValue),
     Function(QualificationFunctionValue),
@@ -207,24 +255,24 @@ pub struct AndQualification {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Qualification {
-    pub key: String,
+    pub key: QualificationFunctionCourseFieldName,
     pub value: QualificationValue,
     pub operator: QualificationOperator,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "type")]
 pub enum Qualifier {
-    Qualification,
-    OrQualification,
-    AndQualification,
+    #[serde(rename = "Qualification")]
+    Single(Qualification),
+    BooleanOr(OrQualification),
+    BooleanAnd(AndQualification),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OfExpression {
     pub count: ExpressionCounter,
     pub of: Vec<HansonExpression>,
-    #[serde(default)]
-    pub distinct: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -292,6 +340,7 @@ pub struct ModifierChildrenWhereExpression {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "from")]
 pub enum ModifierExpression {
     Where(ModifierWhereExpression),
     Filter(ModifierFilterExpression),
@@ -325,10 +374,13 @@ pub struct FilterWhereExpression {
     pub qualifier: Qualifier,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(tag = "type")]
 pub enum FilterExpression {
-    FilterOfExpression,
-    FilterWhereExpression,
+    #[serde(rename = "FilterOf")]
+    Of(FilterOfExpression),
+    #[serde(rename = "FilterWhere")]
+    Where(FilterWhereExpression),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

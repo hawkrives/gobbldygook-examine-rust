@@ -220,28 +220,31 @@
         "type": "BooleanAnd",
         "values": [
           {
-            "from": "filter",
+            "from": "Filter",
             "type": "Modifier",
             "count": {
               "operator": "Gte",
               "num": 6
             },
-            "what": "course"
+            "what": "Course"
           },
           {
-            "from": "filter-where",
+            "from": "FilterWhere",
             "qualifier": {
-              "type": "qualification",
+              "type": "Qualification",
               "key": "level",
               "operator": "Eq",
-              "value": 100
+              "value": {
+                "type": "Number",
+                "value": 100
+              }
             },
             "type": "Modifier",
             "count": {
               "operator": "Lte",
               "num": 2
             },
-            "what": "course"
+            "what": "Course"
           }
         ]
       },
