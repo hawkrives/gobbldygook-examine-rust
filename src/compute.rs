@@ -10,19 +10,11 @@ fn expr_course(
     _dirty: Vec<FullCourse>,
     _is_needed: bool,
 ) -> ExpressionResult {
-    let success = false;
-    let mut matched_courses = vec![];
+    // TODO: … why does ExprCourse return a Vec of courses? Shouldn't it just return a single one?
 
-    for c in courses {
-        // let has_course = courses.contains(&c);
-        // println!("{:?} == {:?}", c.department, expression.department);
-        if c == expression {
-            // println!("success!");
-            matched_courses.push(c);
-        } else {
-            // println!("aww...");
-        }
-    }
+    let matched_courses: Vec<FullCourse> =
+        courses.into_iter().filter(|c| c == &expression).collect();
+    let success = matched_courses.len() > 0;
 
     ExpressionResult {
         expression: HansonExpression::Course(expression),
