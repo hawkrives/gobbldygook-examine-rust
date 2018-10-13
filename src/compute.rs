@@ -1,6 +1,7 @@
 use crate::evaluate::{Course as FullCourse, CourseList, ExpressionResult, Requirement};
 use crate::expressions::{
     BooleanAndExpression, BooleanOrExpression, CourseExpression, HansonExpression,
+    ReferenceExpression,
 };
 
 fn expr_course(
@@ -37,9 +38,7 @@ fn expr_boolean_or(
     dirty: Vec<FullCourse>,
     is_needed: bool,
 ) -> ExpressionResult {
-    let success = false;
     let mut matched_courses = vec![];
-
     let mut have_any_been_true = false;
 
     for expr in expression.clone().values {
@@ -64,9 +63,7 @@ fn expr_boolean_and(
     dirty: Vec<FullCourse>,
     is_needed: bool,
 ) -> ExpressionResult {
-    let success = false;
     let mut matched_courses = vec![];
-
     let mut have_all_been_true = false;
 
     for expr in expression.clone().values {
@@ -81,6 +78,30 @@ fn expr_boolean_and(
         expression: HansonExpression::BooleanAnd(expression),
         matched_courses,
         success: have_all_been_true,
+    }
+}
+
+fn expr_reference(
+    expression: ReferenceExpression,
+    children: &[Requirement],
+    courses: CourseList,
+    dirty: Vec<FullCourse>,
+    is_needed: bool,
+) -> ExpressionResult {
+    let mut success = false;
+    let mut matched_courses = vec![];
+
+    if let Some(child) = children.iter().find(|&r| r.name == expression.requirement) {
+        if let Some(detail) = &child.detail {
+            success = detail.success;
+            matched_courses = detail.matched_courses.clone();
+        }
+    }
+
+    ExpressionResult {
+        expression: HansonExpression::Reference(expression),
+        matched_courses,
+        success,
     }
 }
 
@@ -110,7 +131,7 @@ pub fn compute_expression(
         }
         HansonExpression::Reference(expr) => {
             println!("{:?}", expr);
-            default_result
+            expr_reference(expr, children, courses, dirty, true)
         }
         HansonExpression::BooleanOr(expr) => {
             println!("{:?}", expr);
