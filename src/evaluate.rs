@@ -63,7 +63,7 @@ pub struct ExpressionResult {
     pub was_evaluated: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Course {
     pub clbid: String,
     pub credits: f32,
@@ -79,7 +79,7 @@ pub struct Course {
 }
 
 fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
-    return courses;
+    courses
 }
 
 fn make_requirement_path(path: &Vec<String>) -> String {
@@ -237,6 +237,6 @@ pub fn evaluate_area(
         was_evaluated: true,
         children_results: results,
         error: None,
-        progress: progress,
+        progress,
     }
 }
