@@ -88,7 +88,7 @@ pub struct Course {
     pub year: i32,
 }
 
-fn apply_filter(filter: FilterExpression, courses: CourseList) -> CourseList {
+fn apply_filter(_filter: FilterExpression, courses: CourseList) -> CourseList {
     courses
 }
 
@@ -98,7 +98,7 @@ fn make_requirement_path(path: &Vec<&str>) -> String {
 
 fn apply_fulfillment_to_expression(
     result_expr: HansonExpression,
-    fulfillment_value: Course,
+    _fulfillment_value: Course,
 ) -> HansonExpression {
     result_expr
 }
@@ -130,7 +130,6 @@ fn compute_requirement(
         }).collect();
 
     if let Some(mut result_expr) = requirement.result.clone() {
-        let was_evaluated = false;
         let mut applied_fulfillment: Option<Course> = None;
 
         let mut was_overridden = false;
