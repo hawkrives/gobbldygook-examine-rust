@@ -4,7 +4,8 @@ use serde_derive::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 pub type OverrideMap = BTreeMap<String, bool>;
-pub type FulfillmentMap = BTreeMap<String, Course>;
+pub type Fulfillment = Course;
+pub type FulfillmentMap = BTreeMap<String, Fulfillment>;
 pub type CourseList = Vec<Course>;
 
 // the input to `evaluate`
@@ -18,41 +19,51 @@ pub struct AreaOfStudy {
     pub area_revision: String,
     #[serde(rename = "slug")]
     pub area_url: Option<String>,
+
     pub result: HansonExpression,
     pub children: Vec<Requirement>,
+
+    pub detail: Option<EvaluationResult>,
 }
 
 // the output of `evaluate`
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EvaluationResult {
-    pub area: AreaOfStudy,
+    pub expression_result: ExpressionResult,
+
     pub progress: (usize, usize),
     pub error: Option<String>,
-    // pub matched_courses: Vec<Course>,
+
     pub success: bool,
-    pub was_evaluated: bool,
-    pub children_results: Vec<RequirementResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Requirement {
+    /// The name of the requirement
     pub name: String,
+
+    /// The expressions that make up the body of the requirement
     pub result: Option<HansonExpression>,
     pub message: Option<String>,
     pub filter: Option<FilterExpression>,
+
+    /// The attributes of the requirement
     pub children_share_courses: Option<bool>,
+
+    /// The children of the requirement
     pub children: Vec<Requirement>,
+
+    /// The result of evaluating the `result` field
+    pub detail: Option<RequirementResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RequirementResult {
-    pub applied_fulfillment: Option<Course>,
+    pub applied_fulfillment: Option<Fulfillment>,
     pub matched_courses: Vec<Course>,
     pub success: bool,
-    pub was_evaluated: bool,
     pub overridden: bool,
-    pub children_results: Vec<RequirementResult>,
-    pub requirement: Requirement,
+    pub expression_result: ExpressionResult,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -60,7 +71,6 @@ pub struct ExpressionResult {
     pub expression: HansonExpression,
     pub matched_courses: Vec<Course>,
     pub success: bool,
-    pub was_evaluated: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
@@ -99,14 +109,14 @@ fn compute_requirement(
     mut courses: CourseList,
     overrides: OverrideMap,
     fulfillments: FulfillmentMap,
-) -> RequirementResult {
+) -> Requirement {
     let req_name = requirement.name.clone();
 
     let mut path_to_here: Vec<&str> = vec![];
     path_to_here.extend(path.iter().cloned());
     path_to_here.push(&req_name);
 
-    let children_results: Vec<RequirementResult> = requirement
+    let children_results = requirement
         .children
         .iter()
         .map(|req| {
@@ -119,23 +129,18 @@ fn compute_requirement(
             )
         }).collect();
 
-    let mut success = false;
-    let mut was_evaluated = false;
-    let mut matched_courses: Vec<Course> = vec![];
-    let mut applied_fulfillment: Option<Course> = None;
-
-    let mut was_overridden = false;
-
     if let Some(mut result_expr) = requirement.result.clone() {
-        was_evaluated = true;
+        let was_evaluated = false;
+        let mut applied_fulfillment: Option<Course> = None;
+
+        let mut was_overridden = false;
+        let computed_result;
 
         if let Some(filter) = requirement.filter {
             courses = apply_filter(filter, courses.clone());
         }
 
         // TODO: assert that requirement.result is not empty – probably in hanson-format, rather than examine-student
-
-        let computed_result;
 
         let fulfillment = fulfillments.get(&make_requirement_path(&path));
         if let Some(value) = fulfillment {
@@ -159,32 +164,42 @@ fn compute_requirement(
             );
         }
 
-        success = computed_result.success;
-        matched_courses = computed_result.matched_courses;
+        let mut success = computed_result.success;
+        let matched_courses = computed_result.clone().matched_courses;
 
         let req_override = overrides.get(&make_requirement_path(&path));
         if let Some(value) = req_override {
             was_overridden = true;
             success = *value;
         }
+
+        return Requirement {
+            detail: Some(RequirementResult {
+                applied_fulfillment,
+                matched_courses,
+                success,
+                overridden: was_overridden,
+                expression_result: computed_result,
+            }),
+            children: children_results,
+            ..requirement
+        };
     }
 
-    RequirementResult {
-        applied_fulfillment,
-        matched_courses,
-        success,
-        was_evaluated,
-        overridden: was_overridden,
-        requirement: requirement.clone(),
-        children_results,
+    Requirement {
+        detail: None,
+        children: children_results,
+        ..requirement
     }
 }
 
-fn compute_progress(results: Vec<RequirementResult>) -> (usize, usize) {
+fn compute_progress(results: &[Requirement]) -> (usize, usize) {
     let successes: Vec<bool> = results
         .iter()
-        .map(|r| r.success)
-        .filter(|&pass| pass == true)
+        .map(|r| match &r.detail {
+            Some(detail) => detail.success,
+            None => false,
+        }).filter(|&pass| pass == true)
         .collect();
 
     (successes.len(), results.len())
@@ -195,7 +210,7 @@ pub fn evaluate_area(
     overrides: OverrideMap,
     fulfillments: FulfillmentMap,
     area_of_study: AreaOfStudy,
-) -> EvaluationResult {
+) -> AreaOfStudy {
     // 1. Recursively call compute_requirement() on all children
     // 2. Compute this result
 
@@ -203,7 +218,7 @@ pub fn evaluate_area(
     let kind = area_of_study.area_type.clone();
     let path: Vec<&str> = vec![&name, &kind];
 
-    let results: Vec<RequirementResult> = area_of_study
+    let results: Vec<Requirement> = area_of_study
         .children
         .iter()
         .map(|req| {
@@ -228,15 +243,15 @@ pub fn evaluate_area(
 
     let computed_result = result.success;
 
-    let progress = compute_progress(results.clone());
+    let progress = compute_progress(&results);
 
-    EvaluationResult {
-        area: area_of_study,
-        // matched_courses: vec![],
-        success: computed_result,
-        was_evaluated: true,
-        children_results: results,
-        error: None,
-        progress,
+    AreaOfStudy {
+        detail: Some(EvaluationResult {
+            success: computed_result,
+            expression_result: result,
+            error: None,
+            progress,
+        }),
+        ..area_of_study
     }
 }

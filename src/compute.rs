@@ -9,9 +9,9 @@ fn expr_course(
 ) -> ExpressionResult {
     let success = false;
     let mut matched_courses = vec![];
-    let was_evaluated = true;
 
     for c in courses {
+        // let has_course = courses.contains(&c);
         // println!("{:?} == {:?}", c.department, expression.department);
         if c == expression {
             // println!("success!");
@@ -23,7 +23,6 @@ fn expr_course(
 
     ExpressionResult {
         expression: HansonExpression::Course(expression),
-        was_evaluated,
         matched_courses,
         success,
     }
@@ -42,7 +41,6 @@ pub fn expression(
         expression: expression.clone(),
         matched_courses: vec![],
         success: success,
-        was_evaluated: true,
     };
 
     match expression.clone() {
