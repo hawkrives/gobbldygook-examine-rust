@@ -1,0 +1,683 @@
+{
+  "name": "Asian Studies",
+  "type": "Major",
+  "revision": "2011-12",
+  "slug": "asian-studies",
+  "result": {
+    "type": "Of",
+    "count": {
+      "operator": "Eq",
+      "was": "All"
+    },
+    "of": [
+      {
+        "type": "Reference",
+        "requirement": "Language"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Interdisciplinary"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Seminar"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Electives"
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "Language",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "Of",
+        "count": {
+          "operator": "Gte",
+          "num": 2
+        },
+        "of": [
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 231
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 232
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 294
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 298
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 301
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 302
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 320
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 351
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 394
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 398
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 231
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 232
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 294
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 298
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 301
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 302
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 320
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 394
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 398
+          }
+        ]
+      }
+    },
+    {
+      "name": "Interdisciplinary",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "Course",
+        "department": [
+          "ASIAN"
+        ],
+        "number": 275
+      }
+    },
+    {
+      "name": "Seminar",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "BooleanOr",
+        "values": [
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 397
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 399
+          }
+        ]
+      }
+    },
+    {
+      "name": "Electives",
+      "message": "You may not count more than four courses about any one country. At least two of the level II and III courses must be taken on-campus.",
+      "children": [],
+      "result": {
+        "type": "BooleanAnd",
+        "values": [
+          {
+            "from": "filter",
+            "type": "Modifier",
+            "count": {
+              "operator": "Gte",
+              "num": 6
+            },
+            "what": "course"
+          },
+          {
+            "from": "filter-where",
+            "qualifier": {
+              "type": "qualification",
+              "key": "level",
+              "operator": "Eq",
+              "value": 100
+            },
+            "type": "Modifier",
+            "count": {
+              "operator": "Lte",
+              "num": 2
+            },
+            "what": "course"
+          }
+        ]
+      },
+      "filter": {
+        "type": "FilterOf",
+        "of": [
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 121
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 123
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 126
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 130
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 156
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 200
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 210
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 215
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 216
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 220
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 230
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 235
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 236
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 237
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "SA"
+            ],
+            "number": 239
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 240
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "PS"
+            ],
+            "number": 245
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 250
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "PS"
+            ],
+            "number": 250
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 251
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "PH"
+            ],
+            "number": 251
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 252
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 253
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "RE"
+            ],
+            "number": 253
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "RE"
+            ],
+            "number": 254
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "RE"
+            ],
+            "number": 256
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "RE"
+            ],
+            "number": 257
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AR",
+              "AS"
+            ],
+            "number": 259
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AR",
+              "AS"
+            ],
+            "number": 260
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AR",
+              "AS"
+            ],
+            "number": 262
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 262
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 268
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AR",
+              "AS"
+            ],
+            "number": 270
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "ES"
+            ],
+            "number": 277
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "RE"
+            ],
+            "number": 289
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 294
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 298
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 300
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AR",
+              "AS"
+            ],
+            "number": 310
+          },
+          {
+            "type": "Course",
+            "department": [
+              "AS",
+              "HI"
+            ],
+            "number": 345
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 384
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 396
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ASIAN"
+            ],
+            "number": 398
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 301
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 302
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 320
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 351
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 394
+          },
+          {
+            "type": "Course",
+            "department": [
+              "CHIN"
+            ],
+            "number": 398
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 301
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 302
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 320
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 394
+          },
+          {
+            "type": "Course",
+            "department": [
+              "JAPAN"
+            ],
+            "number": 398
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ECON"
+            ],
+            "number": 218
+          },
+          {
+            "type": "Course",
+            "department": [
+              "ECON"
+            ],
+            "number": 238
+          },
+          {
+            "type": "Course",
+            "department": [
+              "HIST"
+            ],
+            "number": 240
+          },
+          {
+            "type": "Course",
+            "department": [
+              "PHIL"
+            ],
+            "number": 127
+          }
+        ],
+        "distinct": false
+      }
+    }
+  ]
+}

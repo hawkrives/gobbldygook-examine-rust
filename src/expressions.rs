@@ -223,6 +223,8 @@ pub enum Qualifier {
 pub struct OfExpression {
     pub count: ExpressionCounter,
     pub of: Vec<HansonExpression>,
+    #[serde(default)]
+    pub distinct: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
