@@ -108,35 +108,35 @@ pub fn compute_expression(
 
     match expression {
         HansonExpression::Course(expr) => {
-            println!("{:?}", expr);
+            // println!("{:?}", expr);
             expr_course(expr, courses, dirty, true)
         }
-        HansonExpression::Of(expr) => {
-            println!("{:?}", expr);
+        HansonExpression::Of(_expr) => {
+            // println!("{:?}", expr);
             default_result
         }
         HansonExpression::Reference(expr) => {
-            println!("{:?}", expr);
+            // println!("{:?}", expr);
             expr_reference(expr, children)
         }
         HansonExpression::BooleanOr(expr) => {
-            println!("{:?}", expr);
+            // println!("{:?}", expr);
             expr_boolean_or(expr, children, courses, dirty, true)
         }
         HansonExpression::BooleanAnd(expr) => {
-            println!("{:?}", expr);
+            // println!("{:?}", expr);
             expr_boolean_and(expr, children, courses, dirty, true)
         }
-        HansonExpression::Modifier(expr) => {
-            println!("{:?}", expr);
+        HansonExpression::Modifier(_expr) => {
+            // println!("{:?}", expr);
             default_result
         }
-        HansonExpression::Occurrence(expr) => {
-            println!("{:?}", expr);
+        HansonExpression::Occurrence(_expr) => {
+            // println!("{:?}", expr);
             default_result
         }
-        HansonExpression::Where(expr) => {
-            println!("{:?}", expr);
+        HansonExpression::Where(_expr) => {
+            // println!("{:?}", expr);
             default_result
         }
     }

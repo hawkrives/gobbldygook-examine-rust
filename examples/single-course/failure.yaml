@@ -1,0 +1,18 @@
+---
+overrides: {}
+fulfillments: {}
+courses:
+  - "clbid": "0000097582"
+    "credits": 1
+    "crsid": "0000000059"
+    "department": ["ASIAN"]
+    "gereqs": []
+    "instructors": ["Karil J. Kucera"]
+    "level": 100
+    "name": "World Architecture"
+    "number": 101
+    "pn": false
+    "semester": 3
+    "term": 20143
+    "type": "Research"
+    "year": 2014

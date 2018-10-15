@@ -1,0 +1,47 @@
+---
+# fails due to lack of PHIL 103
+overrides: {}
+fulfillments: {}
+courses:
+  - "clbid": "0000097582"
+    "credits": 1
+    "crsid": "0000000059"
+    "department": ["PHIL"]
+    "gereqs": []
+    "instructors": ["Karil J. Kucera"]
+    "level": 100
+    "name": "World Architecture"
+    "number": 101
+    "pn": false
+    "semester": 3
+    "term": 20143
+    "type": "Research"
+    "year": 2014
+  - "clbid": "0000097582"
+    "credits": 1
+    "crsid": "0000000059"
+    "department": ["PHIL"]
+    "gereqs": []
+    "instructors": ["Karil J. Kucera"]
+    "level": 100
+    "name": "World Architecture"
+    "number": 102
+    "pn": false
+    "semester": 3
+    "term": 20143
+    "type": "Research"
+    "year": 2014
+  - "clbid": "0000097582"
+    "credits": 1
+    "crsid": "0000000059"
+    "department": ["PHIL"]
+    "gereqs": []
+    "instructors": ["Karil J. Kucera"]
+    "level": 100
+    "name": "World Architecture"
+    "number": 104 # <- not 103
+    "pn": false
+    "semester": 3
+    "term": 20143
+    "type": "Research"
+    "year": 2014

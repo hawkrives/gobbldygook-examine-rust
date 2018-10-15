@@ -1,0 +1,10 @@
+name: Problematic
+type: major
+revision: 2011-12
+result: Req 1 & Req 2
+
+Req 1:
+    PHIL 101 | PHIL 102
+
+Req 2:
+  	PHIL 101 & PHIL 103

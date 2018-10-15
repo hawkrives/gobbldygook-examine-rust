@@ -1,0 +1,24 @@
+{
+  "name": "Philosophy",
+  "type": "major",
+  "revision": "2011-12",
+  "slug": "philosophy",
+  "result": {
+    "type": "Reference",
+    "requirement": "Requirement"
+  },
+  "children": [
+    {
+      "name": "Requirement",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "Course",
+        "department": [
+          "PHIL"
+        ],
+        "number": 101
+      }
+    }
+  ]
+}

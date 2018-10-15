@@ -1,0 +1,58 @@
+{
+  "name": "Where Y Comes After X",
+  "type": "major",
+  "revision": "2011-12",
+  "slug": "where-y-comes-after-x",
+  "result": {
+    "type": "Reference",
+    "requirement": "Requirement"
+  },
+  "children": [
+    {
+      "name": "Requirement",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "where",
+        "count": {
+          "operator": "Gte",
+          "num": 1
+        },
+        "qualifier": {
+          "type": "BooleanAnd",
+          "values": [
+            {
+              "type": "Qualification",
+              "key": "gereqs",
+              "operator": "Eq",
+              "value": {
+                "type": "String",
+                "value": "EIN"
+              }
+            },
+            {
+              "type": "Qualification",
+              "key": "year",
+              "operator": "Gte",
+              "value": {
+                "name": "min",
+                "prop": "year",
+                "type": "function",
+                "qualifier": {
+                  "type": "Qualification",
+                  "key": "gereqs",
+                  "operator": "Eq",
+                  "value": {
+                    "type": "String",
+                    "value": "BTS-T"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "distinct": false
+      }
+    }
+  ]
+}

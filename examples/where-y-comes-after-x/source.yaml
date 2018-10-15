@@ -1,0 +1,10 @@
+name: Where Y Comes After X
+type: major
+revision: 2011-12
+result: Requirement
+
+Requirement:
+    one course where {
+        gereqs = EIN &
+        year >= min (year) from courses where { gereqs = BTS-T }
+    }

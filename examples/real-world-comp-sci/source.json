@@ -1,0 +1,481 @@
+{
+  "name": "Computer Science",
+  "type": "major",
+  "revision": "2014-15",
+  "slug": "computer-science",
+  "result": {
+    "type": "Of",
+    "count": {
+      "operator": "Eq",
+      "was": "All"
+    },
+    "of": [
+      {
+        "type": "Reference",
+        "requirement": "Foundation"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Core"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Electives"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Capstone"
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "Foundation",
+      "children": [
+        {
+          "name": "CS1",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanOr",
+            "values": [
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 121
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 125
+              },
+              {
+                "type": "Lab",
+                "department": [
+                  "PHYS"
+                ],
+                "number": 130
+              }
+            ]
+          }
+        },
+        {
+          "name": "Design",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanAnd",
+            "values": [
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 241
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 251
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 252
+              }
+            ]
+          }
+        },
+        {
+          "name": "Proof-Writing",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanOr",
+            "values": [
+              {
+                "type": "Course",
+                "semester": 1,
+                "year": 2014,
+                "department": [
+                  "MATH"
+                ],
+                "number": 282
+              },
+              {
+                "type": "Course",
+                "semester": 1,
+                "year": 2015,
+                "department": [
+                  "MATH"
+                ],
+                "number": 282
+              },
+              {
+                "type": "Course",
+                "semester": 1,
+                "year": 2016,
+                "department": [
+                  "MATH"
+                ],
+                "number": 282
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "MATH"
+                ],
+                "number": 244
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "MATH"
+                ],
+                "number": 252
+              }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "type": "Of",
+        "count": {
+          "operator": "Eq",
+          "was": "All"
+        },
+        "of": [
+          {
+            "type": "Reference",
+            "requirement": "CS1"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Design"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Proof-Writing"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Core",
+      "children": [
+        {
+          "name": "Algorithms",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 253
+          }
+        },
+        {
+          "name": "Ethics",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 263
+          }
+        },
+        {
+          "name": "Theory",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanOr",
+            "values": [
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 276
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 333
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 336
+              }
+            ]
+          }
+        },
+        {
+          "name": "Systems",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanOr",
+            "values": [
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 273
+              },
+              {
+                "type": "Course",
+                "department": [
+                  "CSCI"
+                ],
+                "number": 284
+              },
+              {
+                "type": "Course",
+                "semester": 2,
+                "year": 2014,
+                "department": [
+                  "CSCI"
+                ],
+                "number": 300
+              },
+              {
+                "type": "Course",
+                "semester": 3,
+                "year": 2012,
+                "department": [
+                  "CSCI"
+                ],
+                "number": 300
+              }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "type": "Of",
+        "count": {
+          "operator": "Eq",
+          "was": "All"
+        },
+        "of": [
+          {
+            "type": "Reference",
+            "requirement": "Algorithms"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Ethics"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Theory"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Systems"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Electives",
+      "children": [
+        {
+          "name": "Theory of Computation",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 333
+          }
+        },
+        {
+          "name": "Programming Languages",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 276
+          }
+        },
+        {
+          "name": "Client-Server Applications",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 284
+          }
+        },
+        {
+          "name": "Operating Systems",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 273
+          }
+        },
+        {
+          "name": "Bioinformatics",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 315
+          }
+        },
+        {
+          "name": "Topics in Computer Science",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 300
+          }
+        },
+        {
+          "name": "Logic Programming",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 336
+          }
+        },
+        {
+          "name": "Advanced Team Project",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "Course",
+            "department": [
+              "CSCI"
+            ],
+            "number": 350
+          }
+        },
+        {
+          "name": "HiPerCiC",
+          "declare": {},
+          "children": [],
+          "result": {
+            "type": "BooleanAnd",
+            "values": [
+              {
+                "type": "Course",
+                "department": [
+                  "ID"
+                ],
+                "number": 259
+              },
+              {
+                "type": "Lab",
+                "department": [
+                  "ID"
+                ],
+                "number": 259
+              }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "type": "Of",
+        "count": {
+          "operator": "Gte",
+          "num": 2
+        },
+        "of": [
+          {
+            "type": "Reference",
+            "requirement": "Theory of Computation"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Programming Languages"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Client-Server Applications"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Operating Systems"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Bioinformatics"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Topics in Computer Science"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Logic Programming"
+          },
+          {
+            "type": "Reference",
+            "requirement": "Advanced Team Project"
+          },
+          {
+            "type": "Reference",
+            "requirement": "HiPerCiC"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Capstone",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "Course",
+        "department": [
+          "CSCI"
+        ],
+        "number": 390
+      }
+    }
+  ]
+}

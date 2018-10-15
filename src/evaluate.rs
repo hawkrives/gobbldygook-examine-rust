@@ -63,7 +63,6 @@ pub struct RequirementResult {
     pub matched_courses: Vec<Course>,
     pub success: bool,
     pub overridden: bool,
-    pub expression_result: ExpressionResult,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -270,22 +269,30 @@ fn compute_requirement(
         }
 
         return Requirement {
+            // ..requirement,
+            children_share_courses: requirement.children_share_courses,
+            filter: requirement.filter,
+            message: requirement.message,
+            name: requirement.name,
+            result: requirement.result,
             detail: Some(RequirementResult {
                 applied_fulfillment,
                 matched_courses,
                 success,
                 overridden: was_overridden,
-                expression_result: computed_result,
             }),
             children: children_results,
-            ..requirement
         };
     }
 
     Requirement {
+        children_share_courses: requirement.children_share_courses,
+        filter: requirement.filter,
+        message: requirement.message,
+        name: requirement.name,
+        result: requirement.result,
         detail: None,
         children: children_results,
-        ..requirement
     }
 }
 
@@ -342,12 +349,17 @@ pub fn evaluate_area(
     let progress = compute_progress(&results);
 
     AreaOfStudy {
+        area_name: area_of_study.area_name,
+        area_revision: area_of_study.area_revision,
+        area_type: area_of_study.area_type,
+        area_url: area_of_study.area_url,
+        result: area_of_study.result,
+        children: results,
         detail: Some(EvaluationResult {
             success: computed_result,
             expression_result: result,
             error: None,
             progress,
         }),
-        ..area_of_study
     }
 }

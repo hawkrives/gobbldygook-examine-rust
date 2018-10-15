@@ -1,0 +1,69 @@
+{
+  "name": "Problematic",
+  "type": "major",
+  "revision": "2011-12",
+  "slug": "problematic",
+  "result": {
+    "type": "BooleanAnd",
+    "values": [
+      {
+        "type": "Reference",
+        "requirement": "Req 1"
+      },
+      {
+        "type": "Reference",
+        "requirement": "Req 2"
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "Req 1",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "BooleanOr",
+        "values": [
+          {
+            "type": "Course",
+            "department": [
+              "PHIL"
+            ],
+            "number": 101
+          },
+          {
+            "type": "Course",
+            "department": [
+              "PHIL"
+            ],
+            "number": 102
+          }
+        ]
+      }
+    },
+    {
+      "name": "Req 2",
+      "declare": {},
+      "children": [],
+      "result": {
+        "type": "BooleanAnd",
+        "values": [
+          {
+            "type": "Course",
+            "department": [
+              "PHIL"
+            ],
+            "number": 101
+          },
+          {
+            "type": "Course",
+            "department": [
+              "PHIL"
+            ],
+            "number": 103
+          }
+        ]
+      }
+    }
+  ]
+}
