@@ -20,111 +20,95 @@ fn compare_departments(lhs_depts: &Vec<String>, rhs_depts: &Vec<String>) -> bool
     diff.len() == 0
 }
 
+fn compare_courses(lhs: &CourseExpression, rhs: &FullCourse) -> bool {
+    if !compare_departments(&lhs.department, &rhs.department) {
+        return false;
+    }
+
+    if lhs.number != rhs.number {
+        return false;
+    }
+
+    if let Some(year) = lhs.year {
+        if year == rhs.year {
+            return false;
+        }
+    }
+
+    if let Some(semester) = lhs.semester {
+        if semester == rhs.semester {
+            return false;
+        }
+    }
+
+    true
+}
+
 impl PartialEq<FullCourse> for CourseExpression {
     fn eq(&self, other: &FullCourse) -> bool {
-        if !compare_departments(&self.department, &other.department) {
-            return false;
-        }
-
-        if self.number != other.number {
-            return false;
-        }
-
-        if let Some(year) = self.year {
-            if year == other.year {
-                return false;
-            }
-        }
-
-        if let Some(semester) = self.semester {
-            if semester == other.semester {
-                return false;
-            }
-        }
-
-        true
+        compare_courses(&self, &other)
     }
 }
 
 impl PartialEq<CourseExpression> for FullCourse {
     fn eq(&self, other: &CourseExpression) -> bool {
-        if !compare_departments(&self.department, &other.department) {
-            return false;
-        }
-
-        if self.number != other.number {
-            return false;
-        }
-
-        if let Some(other_semester) = other.semester {
-            if self.semester == other_semester {
-                return false;
-            }
-        }
-
-        if let Some(other_year) = other.year {
-            if self.year == other_year {
-                return false;
-            }
-        }
-
-        true
+        compare_courses(&other, &self)
     }
 }
 
-// #[test]
-// fn courses_vs_course_exprs() {
-//     let course = FullCourse {
-//         clbid: "1".to_string(),
-//         credits: ordered_float::OrderedFloat(1.0),
-//         crsid: "1".to_string(),
-//         department: vec!["CSCI".to_string()],
-//         groupid: Some("1".to_string()),
-//         grouptype: Some("R".to_string()),
-//         level: 100,
-//         number: 101,
-//         section: Some("A".to_string()),
-//         semester: 1,
-//         year: 2000,
-//     };
+#[test]
+fn courses_vs_course_exprs() {
+    let course = FullCourse {
+        clbid: "1".to_string(),
+        credits: ordered_float::OrderedFloat(1.0),
+        crsid: "1".to_string(),
+        department: vec!["CSCI".to_string()],
+        groupid: Some("1".to_string()),
+        grouptype: Some("R".to_string()),
+        level: 100,
+        number: 101,
+        section: Some("A".to_string()),
+        semester: 1,
+        year: 2000,
+    };
 
-//     let yes_expr = CourseExpression {
-//         department: vec!["CSCI".to_string()],
-//         level: None,
-//         number: 101,
-//         semester: None,
-//         year: None,
-//     };
+    let yes_expr = CourseExpression {
+        department: vec!["CSCI".to_string()],
+        level: None,
+        number: 101,
+        semester: None,
+        year: None,
+    };
 
-//     assert_eq!(yes_expr, course);
-// }
+    assert_eq!(yes_expr, course);
+}
 
-// #[test]
-// fn courses_vs_course_exprs_diff_depts() {
-//     let course = FullCourse {
-//         clbid: "1".to_string(),
-//         credits: ordered_float::OrderedFloat(1.0),
-//         crsid: "1".to_string(),
-//         department: vec!["CSCI".to_string()],
-//         groupid: Some("1".to_string()),
-//         grouptype: Some("R".to_string()),
-//         level: 100,
-//         number: 101,
-//         section: Some("A".to_string()),
-//         semester: 1,
-//         year: 2000,
-//     };
+#[test]
+fn courses_vs_course_exprs_diff_depts() {
+    let course = FullCourse {
+        clbid: "1".to_string(),
+        credits: ordered_float::OrderedFloat(1.0),
+        crsid: "1".to_string(),
+        department: vec!["CSCI".to_string()],
+        groupid: Some("1".to_string()),
+        grouptype: Some("R".to_string()),
+        level: 100,
+        number: 101,
+        section: Some("A".to_string()),
+        semester: 1,
+        year: 2000,
+    };
 
-//     let no_expr = CourseExpression {
-//         department: vec!["ASIAN".to_string()],
-//         level: None,
-//         number: 101,
-//         semester: None,
-//         year: None,
-//     };
+    let no_expr = CourseExpression {
+        department: vec!["ASIAN".to_string()],
+        level: None,
+        number: 101,
+        semester: None,
+        year: None,
+    };
 
-//     assert_ne!(no_expr, course);
-// }
+    assert_ne!(no_expr, course);
+}
 
 impl PartialEq<FullCourse> for Qualifier {
     fn eq(&self, _other: &FullCourse) -> bool {
