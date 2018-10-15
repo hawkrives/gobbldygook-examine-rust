@@ -1,13 +1,24 @@
-use crate::evaluate::{AreaOfStudy, ExpressionResult, Requirement};
-use crate::expressions::HansonExpression;
+use crate::evaluate::{AreaOfStudy, Requirement};
+use crate::expression::HansonExpression;
+use crate::parse::DataStruct;
 // use crate::expressions;
+
+pub fn print_student(data: &DataStruct) {
+    println!("Available courses:");
+
+    for c in data.courses.clone() {
+        println!("{}", c);
+    }
+
+    println!("");
+}
 
 pub fn print_area(area_of_study: AreaOfStudy) {
     println!("Name: {}", area_of_study.area_name);
     println!("Type: {}", area_of_study.area_type);
     println!("Revision: {}", area_of_study.area_revision);
 
-    if let Some(detail) = area_of_study.detail {
+    if let Some(detail) = area_of_study.evaluated {
         println!(
             "Status: {}",
             if detail.success { "Success" } else { "Failure" }
@@ -32,7 +43,7 @@ pub fn print_area(area_of_study: AreaOfStudy) {
 fn print_requirement(req: Requirement) {
     println!("Requirement: {}", req.name);
 
-    if let Some(detail) = req.detail {
+    if let Some(detail) = req.evaluated {
         println!("Status: {}", detail.success);
     }
 

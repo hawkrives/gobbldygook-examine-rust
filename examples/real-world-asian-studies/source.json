@@ -230,7 +230,7 @@
           },
           {
             "from": "FilterWhere",
-            "qualifier": {
+            "qualification": {
               "type": "Qualification",
               "key": "level",
               "operator": "Eq",

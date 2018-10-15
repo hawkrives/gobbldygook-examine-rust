@@ -18,7 +18,7 @@
           "operator": "Gte",
           "num": 1
         },
-        "qualifier": {
+        "qualification": {
           "type": "BooleanAnd",
           "values": [
             {
@@ -38,7 +38,7 @@
                 "name": "min",
                 "prop": "year",
                 "type": "function",
-                "qualifier": {
+                "qualification": {
                   "type": "Qualification",
                   "key": "gereqs",
                   "operator": "Eq",

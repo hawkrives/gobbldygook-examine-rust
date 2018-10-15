@@ -4,7 +4,7 @@
 
 mod compute;
 mod evaluate;
-mod expressions;
+mod expression;
 mod parse;
 mod print;
 
@@ -62,19 +62,20 @@ fn main() {
         println!("{}", serde_json::to_string_pretty(&area).unwrap());
     }
 
-    let result = evaluate::evaluate_area(data.courses, data.overrides, data.fulfillments, area);
+    let result = evaluate::evaluate_area(&data.courses, &data.overrides, &data.fulfillments, area);
 
     if opts.serialize_result {
         println!("{}", serde_yaml::to_string(&result).unwrap());
     }
 
+    print::print_student(&data);
     print::print_area(result);
 }
 
 // #[cfg(test)]
 // mod tests {
-//     use self::test::Bencher;
 //     use super::*;
+//     use self::test::Bencher;
 
 //     #[bench]
 //     fn bench_evaluate(b: &mut Bencher) {
